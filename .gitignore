@@ -5,11 +5,10 @@
 *.o
 *.a
 
-*.xcodeproj/*
-!*.xcodeproj/project.pbxproj
 
-/JUCE
-/proofOfConcept Project
+**/*.xcodeproj/*
+!**/*.xcodeproj/project.pbxproj
+!**/*.xcodeproj/xcshareddata
+
 /Builds
 
-testProjects/

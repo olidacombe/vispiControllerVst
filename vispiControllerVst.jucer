@@ -9,7 +9,7 @@
               pluginIsSynth="0" pluginWantsMidiIn="1" pluginProducesMidiOut="0"
               pluginIsMidiEffectPlugin="1" pluginEditorRequiresKeys="0" pluginAUExportPrefix="vispiControllerVstAU"
               pluginRTASCategory="" aaxIdentifier="com.yourcompany.vispiControllerVst"
-              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="4.3.0">
+              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="4.3.1">
   <MAINGROUP id="lbZJhT" name="vispiControllerVst">
     <GROUP id="{4F42BF4C-E85D-35F4-8A62-2C3DA97E60F9}" name="Source">
       <FILE id="ka9GP0" name="PluginProcessor.cpp" compile="1" resource="0"
