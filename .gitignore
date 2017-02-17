@@ -1,0 +1,15 @@
+
+.DS_Store
+*.swp
+*.app
+*.o
+*.a
+
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+
+/JUCE
+/proofOfConcept Project
+/Builds
+
+testProjects/

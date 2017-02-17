@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="W1KRnV" name="vispiControllerVst" projectType="audioplug"
+              version="1.0.0" bundleIdentifier="com.foxhotelmusic.vispiControllerVst"
+              includeBinaryInAppConfig="1" buildVST="1" buildVST3="0" buildAU="0"
+              buildAUv3="0" buildRTAS="0" buildAAX="0" pluginName="vispiControllerVst"
+              pluginDesc="vispiControllerVst" pluginManufacturer="Fox Hotel"
+              pluginManufacturerCode="FHms" pluginCode="vpCV" pluginChannelConfigs=""
+              pluginIsSynth="0" pluginWantsMidiIn="1" pluginProducesMidiOut="0"
+              pluginIsMidiEffectPlugin="1" pluginEditorRequiresKeys="0" pluginAUExportPrefix="vispiControllerVstAU"
+              pluginRTASCategory="" aaxIdentifier="com.yourcompany.vispiControllerVst"
+              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="4.3.0">
+  <MAINGROUP id="lbZJhT" name="vispiControllerVst">
+    <GROUP id="{4F42BF4C-E85D-35F4-8A62-2C3DA97E60F9}" name="Source">
+      <FILE id="ka9GP0" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="U6XJlQ" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="kW929e" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="tJtUYh" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="vispiControllerVst"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="vispiControllerVst"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../src/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_video" showAllCode="1" useLocalCopy="0"/>
+  </MODULES>
+  <JUCEOPTIONS JUCE_QUICKTIME="disabled"/>
+</JUCERPROJECT>
