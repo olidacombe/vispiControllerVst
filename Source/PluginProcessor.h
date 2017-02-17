@@ -12,6 +12,7 @@
 #define PLUGINPROCESSOR_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "OSCMessenger.h"
 
 
 //==============================================================================
@@ -61,10 +62,11 @@ public:
 
 private:
     int videoSelectionCC;
-    
     int videoSelection;
     
     void processVideoSelection(const int& n);
+    
+    OSCMessenger messenger;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VispiControllerVstAudioProcessor)

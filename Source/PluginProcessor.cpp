@@ -23,6 +23,7 @@ VispiControllerVstAudioProcessor::VispiControllerVstAudioProcessor()
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
                        ),
+    messenger("vispi", 12345),
     videoSelectionCC(99)
 #endif
 {

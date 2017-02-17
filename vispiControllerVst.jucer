@@ -12,6 +12,9 @@
               pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="4.3.1">
   <MAINGROUP id="lbZJhT" name="vispiControllerVst">
     <GROUP id="{4F42BF4C-E85D-35F4-8A62-2C3DA97E60F9}" name="Source">
+      <FILE id="B4W38f" name="OSCMessenger.cpp" compile="1" resource="0"
+            file="Source/OSCMessenger.cpp"/>
+      <FILE id="v4Ggie" name="OSCMessenger.h" compile="0" resource="0" file="Source/OSCMessenger.h"/>
       <FILE id="ka9GP0" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="U6XJlQ" name="PluginProcessor.h" compile="0" resource="0"
@@ -42,6 +45,7 @@
         <MODULEPATH id="juce_audio_formats" path="../../src/JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../../src/JUCE/modules"/>
         <MODULEPATH id="juce_audio_plugin_client" path="../../src/JUCE/modules"/>
+        <MODULEPATH id="juce_osc" path="../../src/JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
   </EXPORTFORMATS>
@@ -59,6 +63,7 @@
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_osc" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_video" showAllCode="1" useLocalCopy="0"/>
   </MODULES>
   <JUCEOPTIONS JUCE_QUICKTIME="disabled"/>
