@@ -58,6 +58,10 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+    int videoSelectionCC;
+    
+    void processVideoSelection(const int& n);
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VispiControllerVstAudioProcessor)
 };

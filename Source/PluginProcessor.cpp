@@ -22,7 +22,8 @@ VispiControllerVstAudioProcessor::VispiControllerVstAudioProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+    videoSelectionCC(99)
 #endif
 {
 }
@@ -132,6 +133,7 @@ bool VispiControllerVstAudioProcessor::isBusesLayoutSupported (const BusesLayout
 
 void VispiControllerVstAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+    /*
     const int totalNumInputChannels  = getTotalNumInputChannels();
     const int totalNumOutputChannels = getTotalNumOutputChannels();
 
@@ -152,6 +154,28 @@ void VispiControllerVstAudioProcessor::processBlock (AudioSampleBuffer& buffer, 
 
         // ..do something to the data...
     }
+    */
+    buffer.clear();
+    
+    MidiBuffer processedMidi;
+    int time;
+    MidiMessage m;
+    
+    for (MidiBuffer::Iterator i (midiMessages); i.getNextEvent (m, time);)
+    {
+        if (m.isController() && m.getControllerNumber() == videoSelectionCC)
+        {
+            processVideoSelection(m.getControllerValue());
+        }
+        
+        processedMidi.addEvent (m, time);
+    }
+    
+    midiMessages.swapWith (processedMidi);
+}
+
+void VispiControllerVstAudioProcessor::processVideoSelection(const int& n) {
+    
 }
 
 //==============================================================================
