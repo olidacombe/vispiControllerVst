@@ -32,7 +32,7 @@ void VispiControllerVstAudioProcessorEditor::paint (Graphics& g)
 
     g.setColour (Colours::black);
     g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), Justification::centred, 1);
+    g.drawFittedText (String(processor.getVideoSelection()), getLocalBounds(), Justification::centred, 1);
 }
 
 void VispiControllerVstAudioProcessorEditor::resized()

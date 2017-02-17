@@ -5,6 +5,7 @@
 *.o
 *.a
 
+/poc Project/
 
 **/*.xcodeproj/*
 !**/*.xcodeproj/project.pbxproj

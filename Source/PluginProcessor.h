@@ -56,9 +56,13 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    int getVideoSelection() { return videoSelection; }
 
 private:
     int videoSelectionCC;
+    
+    int videoSelection;
     
     void processVideoSelection(const int& n);
     

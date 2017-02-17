@@ -29,6 +29,9 @@ public:
     void resized() override;
 
 private:
+    
+    TextEditor midiMessagesDebugBox;
+    
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     VispiControllerVstAudioProcessor& processor;

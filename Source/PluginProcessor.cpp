@@ -165,7 +165,8 @@ void VispiControllerVstAudioProcessor::processBlock (AudioSampleBuffer& buffer, 
     {
         if (m.isController() && m.getControllerNumber() == videoSelectionCC)
         {
-            processVideoSelection(m.getControllerValue());
+            videoSelection = m.getControllerValue(); // % playlist length...
+            processVideoSelection(videoSelection);
         }
         
         processedMidi.addEvent (m, time);
