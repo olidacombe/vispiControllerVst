@@ -25,6 +25,7 @@ private:
     int port;
     OSCSender sender;
     
+    CriticalSection videoSelectionMutex;
     std::deque<String> videoSelections;
     
     bool sendVideoSelection(const String& name);

@@ -22,6 +22,7 @@ OSCMessenger::OSCMessenger(String targetHost, int targetPort) :
 
 void OSCMessenger::pushVideoFile(const String& name) {
     // mutex.lock();
+    const ScopedLock mutex(videoSelectionMutex);
     videoSelections.push_back(name);
     notify();
     // mutex.unlock();
@@ -32,6 +33,7 @@ void OSCMessenger::run()
     while (! threadShouldExit())
     {
         //mutex.lock();
+        videoSelectionMutex.enter();
         if(videoSelections.empty()) {
             wait(-1);  // suspend exectution on condition of addition to queue
         }
@@ -40,6 +42,7 @@ void OSCMessenger::run()
         videoSelections.pop_front();
         
         //mutex.unlock();
+        videoSelectionMutex.exit();
         
         sendVideoSelection(videoSelection);
             
