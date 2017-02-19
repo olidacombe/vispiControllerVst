@@ -12,23 +12,22 @@
 #define MESSAGEDISPATCHER_H_INCLUDED
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include <deque>
 
 class OSCMessenger : public Thread
 {
 public:
     OSCMessenger(String targetHost, int targetPort);
-    void run() override
-    {
-        while (! threadShouldExit())
-        {
-            //checkForBuffersToFree();
-            wait (500);
-        }   
-    }
+    void run() override;
+    void pushVideoFile(const String& name);
 private:
     String host;
     int port;
     OSCSender sender;
+    
+    std::deque<String> videoSelections;
+    
+    bool sendVideoSelection(const String& name);
     
     void showConnectionErrorMessage (const String& messageText)
     {
