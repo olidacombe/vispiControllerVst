@@ -18,6 +18,7 @@ class OSCMessenger : public Thread
 {
 public:
     OSCMessenger(String targetHost, int targetPort);
+    ~OSCMessenger() { stopThread(1000); }
     void run() override;
     void pushVideoFile(const String& name);
 private:

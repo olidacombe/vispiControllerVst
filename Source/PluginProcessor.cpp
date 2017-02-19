@@ -177,7 +177,7 @@ void VispiControllerVstAudioProcessor::processBlock (AudioSampleBuffer& buffer, 
 }
 
 void VispiControllerVstAudioProcessor::processVideoSelection(const int& n) {
-    
+    messenger.pushVideoFile("a real video file name " + String(videoSelection));
 }
 
 //==============================================================================

@@ -16,35 +16,39 @@
 OSCMessenger::OSCMessenger(String targetHost, int targetPort) :
    Thread("Message Dispatcher (OSC)"),  host(targetHost), port(targetPort)
 {
-    if (! sender.connect (host, port))
+    if (sender.connect (host, port)) {
+        startThread(); // something going wrong here
+    }
+    else {
         showConnectionErrorMessage ("Error: could not connect to UDP port");
+    }
 }
 
 void OSCMessenger::pushVideoFile(const String& name) {
-    // mutex.lock();
+    
     const ScopedLock mutex(videoSelectionMutex);
     videoSelections.push_back(name);
     notify();
-    // mutex.unlock();
+
 }
 
 void OSCMessenger::run()
 {
     while (! threadShouldExit())
     {
-        //mutex.lock();
+
         videoSelectionMutex.enter();
-        if(videoSelections.empty()) {
-            wait(-1);  // suspend exectution on condition of addition to queue
+        
+        if(!videoSelections.empty()) {
+            String videoSelection = videoSelections.front();
+            videoSelections.pop_front();
+            
+            videoSelectionMutex.exit();
+            
+            sendVideoSelection(videoSelection);
+        } else {
+            wait(-1);
         }
-        
-        String videoSelection = videoSelections.front();
-        videoSelections.pop_front();
-        
-        //mutex.unlock();
-        videoSelectionMutex.exit();
-        
-        sendVideoSelection(videoSelection);
             
     }   
 }
