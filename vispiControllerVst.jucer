@@ -27,8 +27,10 @@
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="vispiControllerVst"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="vispiControllerVst"/>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="vispiControllerVst"
+                       osxSDK="default" osxCompatibility="10.10 SDK"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="vispiControllerVst"
+                       osxSDK="default" osxCompatibility="10.10 SDK"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../../src/JUCE/modules"/>
