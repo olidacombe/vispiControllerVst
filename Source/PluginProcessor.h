@@ -70,10 +70,15 @@ public:
         return fileNames.size();
     }
     
+    OSCMessenger* getMessenger() { return &messenger; }
+    const int getSelectedVideoIndex() { return selectedVideoIndex; }
+    
     static const String xspfUriToString(const String& uri);
 
+    
 private:
     int videoSelectionCC;
+    int selectedVideoIndex;
     String playlistFilename;
     ScopedPointer<XmlElement> playlistData;
     

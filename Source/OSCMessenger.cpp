@@ -46,6 +46,7 @@ void OSCMessenger::run()
             videoSelectionMutex.exit();
             
             sendVideoSelection(videoSelection);
+            sendChangeMessage();
         } else {
             videoSelectionMutex.exit();
             wait(-1);

@@ -35,6 +35,7 @@ private:
     ListBox videoListBox;
 
     VispiControllerVstAudioProcessor& processor;
+    OSCMessenger* messenger;
     
     class VideoListboxContents : public ListBoxModel
     {

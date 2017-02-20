@@ -23,17 +23,24 @@ VispiControllerVstAudioProcessorEditor::VispiControllerVstAudioProcessorEditor (
     videoListboxModel = new VideoListboxContents(processor);
     videoListBox.setModel(videoListboxModel);
     addAndMakeVisible(videoListBox);
+    
+    messenger = processor.getMessenger();
+    messenger->addChangeListener(this);
 }
 
 VispiControllerVstAudioProcessorEditor::~VispiControllerVstAudioProcessorEditor()
 {
+    messenger->removeChangeListener(this);
     // delete this:
     videoListboxModel = nullptr;
     // before the list it references
 }
 
 void VispiControllerVstAudioProcessorEditor::changeListenerCallback(ChangeBroadcaster *source) {
-    
+    if(source==messenger) {
+        //std::cout << "word from the messenger" << std::endl;
+        videoListBox.selectRow(processor.getSelectedVideoIndex());
+    }
 }
 
 //==============================================================================
@@ -66,6 +73,9 @@ void VispiControllerVstAudioProcessorEditor::VideoListboxContents::paintListBoxI
 {
     if(rowNumber >= getNumRows()) return;
     g.setColour(Colours::black);
+    if(rowIsSelected) {
+        g.fillAll(Colours::cornsilk);
+    }
     g.setFont(height * 0.7f);
     // ScopedLock...?
     g.drawText(processor.getFileName(rowNumber), 5, 0, width, height, Justification::centredLeft, true);
