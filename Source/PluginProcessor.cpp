@@ -183,7 +183,9 @@ void VispiControllerVstAudioProcessor::processBlock (AudioSampleBuffer& buffer, 
 }
 
 void VispiControllerVstAudioProcessor::processVideoSelection(const int n) {
-    messenger.pushVideoFile("a real video file name " + String(n));
+    if(n<getNumFiles()) {
+        messenger.pushVideoFile(getFileName(n));
+    }
 }
 
 
@@ -224,17 +226,6 @@ const String VispiControllerVstAudioProcessor::xspfUriToString(const String& uri
     
 }
 
-/*
-void loadData()
-{
-    demoData = XmlDocument::parse (BinaryData::demo_table_data_xml);
-
-    dataList   = demoData->getChildByName ("DATA");
-    columnList = demoData->getChildByName ("COLUMNS");
-
-    numRows = dataList->getNumChildElements();
-}
-*/
 
 
 //==============================================================================
