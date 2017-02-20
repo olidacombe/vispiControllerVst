@@ -192,6 +192,22 @@ bool VispiControllerVstAudioProcessor::loadPlaylist(const String& path) {
     if(!file.exists()) return false;
     playlistData = XmlDocument::parse(file);
     if(playlistData == nullptr) return false;
+    
+    ScopedLock fileNamesLock(fileNamesMutex);
+    // now populate our fileNames vector...
+    
+    XmlElement * tracklist = playlistData->getChildByName("trackList");
+    if(tracklist == nullptr) return false;
+    XmlElement * track = tracklist->getChildByName("track");
+    
+    while(track != nullptr)
+    {
+        std::cout<< "a track!" <<std::endl;
+        
+        track = track->getNextElementWithTagName("track");
+    }
+    
+    
     return true;
 }
 

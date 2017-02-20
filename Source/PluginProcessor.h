@@ -66,13 +66,12 @@ public:
         return "";
     }
     const int getNumFiles() {
-        //const ScopedLock fileNamesLock(fileNamesMutex);
+        //const ScopedLock fileNamesLock(fileNamesMutex); // probably unnecessary
         return fileNames.size();
     }
 
 private:
     int videoSelectionCC;
-    //int videoSelection;
     String playlistFilename;
     ScopedPointer<XmlElement> playlistData;
     
