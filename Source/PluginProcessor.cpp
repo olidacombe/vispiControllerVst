@@ -166,9 +166,12 @@ void VispiControllerVstAudioProcessor::processBlock (AudioSampleBuffer& buffer, 
     {
         if (m.isController() && m.getControllerNumber() == videoSelectionCC)
         {
-            videoSelection = m.getControllerValue(); // % playlist length...
-            processVideoSelection(videoSelection);
+            //videoSelection = m.getControllerValue(); // % playlist length...
+            processVideoSelection(m.getControllerValue());
+        } else if(m.isNoteOn()) {
+            processVideoSelection(m.getNoteNumber());
         }
+        
         
         processedMidi.addEvent (m, time);
     }
@@ -177,7 +180,7 @@ void VispiControllerVstAudioProcessor::processBlock (AudioSampleBuffer& buffer, 
 }
 
 void VispiControllerVstAudioProcessor::processVideoSelection(const int& n) {
-    messenger.pushVideoFile("a real video file name " + String(videoSelection));
+    messenger.pushVideoFile("a real video file name " + String(n));
 }
 
 //==============================================================================
