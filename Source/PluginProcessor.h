@@ -58,13 +58,16 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
-    int getVideoSelection() { return videoSelection; }
+    //int getVideoSelection() { return videoSelection; }
 
 private:
     int videoSelectionCC;
-    int videoSelection;
+    //int videoSelection;
+    String playlistFilename;
+    ScopedPointer<XmlElement> playlistData;
     
     void processVideoSelection(const int& n);
+    bool loadPlaylist(const String& path);
     
     OSCMessenger messenger;
     

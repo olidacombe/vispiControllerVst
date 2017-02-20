@@ -24,9 +24,12 @@ VispiControllerVstAudioProcessor::VispiControllerVstAudioProcessor()
                      #endif
                        ),
     messenger("vispi", 12345),
+    playlistFilename("~/live_videos.xspf"),
     videoSelectionCC(99)
 #endif
 {
+    String playlistStatus = loadPlaylist(playlistFilename) ? "Playlist ok" : "Playlist fail";
+    std::cout << playlistStatus << std::endl;
 }
 
 VispiControllerVstAudioProcessor::~VispiControllerVstAudioProcessor()
@@ -182,6 +185,28 @@ void VispiControllerVstAudioProcessor::processBlock (AudioSampleBuffer& buffer, 
 void VispiControllerVstAudioProcessor::processVideoSelection(const int& n) {
     messenger.pushVideoFile("a real video file name " + String(n));
 }
+
+
+bool VispiControllerVstAudioProcessor::loadPlaylist(const String& path) {
+    File file(path);
+    if(!file.exists()) return false;
+    playlistData = XmlDocument::parse(file);
+    if(playlistData == nullptr) return false;
+    return true;
+}
+
+/*
+void loadData()
+{
+    demoData = XmlDocument::parse (BinaryData::demo_table_data_xml);
+
+    dataList   = demoData->getChildByName ("DATA");
+    columnList = demoData->getChildByName ("COLUMNS");
+
+    numRows = dataList->getNumChildElements();
+}
+*/
+
 
 //==============================================================================
 bool VispiControllerVstAudioProcessor::hasEditor() const

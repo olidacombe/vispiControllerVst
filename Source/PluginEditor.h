@@ -30,7 +30,7 @@ public:
 
 private:
     
-    TextEditor midiMessagesDebugBox;
+    //TextEditor midiMessagesDebugBox;
     
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
