@@ -69,6 +69,8 @@ public:
         //const ScopedLock fileNamesLock(fileNamesMutex); // probably unnecessary
         return fileNames.size();
     }
+    
+    static const String xspfUriToString(const String& uri);
 
 private:
     int videoSelectionCC;

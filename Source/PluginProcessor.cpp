@@ -188,12 +188,14 @@ void VispiControllerVstAudioProcessor::processVideoSelection(const int n) {
 
 
 bool VispiControllerVstAudioProcessor::loadPlaylist(const String& path) {
+    
     File file(path);
     if(!file.exists()) return false;
     playlistData = XmlDocument::parse(file);
     if(playlistData == nullptr) return false;
     
     ScopedLock fileNamesLock(fileNamesMutex);
+    fileNames.clear();
     // now populate our fileNames vector...
     
     XmlElement * tracklist = playlistData->getChildByName("trackList");
@@ -206,7 +208,7 @@ bool VispiControllerVstAudioProcessor::loadPlaylist(const String& path) {
         
         XmlElement * location = track->getChildByName("location");
         if(location != nullptr) {
-            std::cout<< URL::removeEscapeChars(location->getAllSubText()) <<std::endl;
+            fileNames.push_back(xspfUriToString(location->getAllSubText()));
         }
         
         track = track->getNextElementWithTagName("track");
@@ -214,6 +216,12 @@ bool VispiControllerVstAudioProcessor::loadPlaylist(const String& path) {
     
     
     return true;
+}
+
+const String VispiControllerVstAudioProcessor::xspfUriToString(const String& uri)
+{
+    return URL::removeEscapeChars(uri.fromLastOccurrenceOf("/", false, false));
+    
 }
 
 /*
