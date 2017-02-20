@@ -66,7 +66,7 @@ private:
     String playlistFilename;
     ScopedPointer<XmlElement> playlistData;
     
-    void processVideoSelection(const int& n);
+    void processVideoSelection(const int n);
     bool loadPlaylist(const String& path);
     
     OSCMessenger messenger;

@@ -20,12 +20,16 @@ VispiControllerVstAudioProcessorEditor::VispiControllerVstAudioProcessorEditor (
     // editor's size to whatever you need it to be.
     setSize (400, 300);
     
-    videoListBox.setModel(&videoListboxModel);
+    videoListboxModel = new VideoListboxContents(&fileNames);
+    videoListBox.setModel(videoListboxModel);
     addAndMakeVisible(videoListBox);
 }
 
 VispiControllerVstAudioProcessorEditor::~VispiControllerVstAudioProcessorEditor()
 {
+    // delete this:
+    videoListboxModel = nullptr;
+    // before the list it references
 }
 
 //==============================================================================
@@ -47,9 +51,9 @@ void VispiControllerVstAudioProcessorEditor::resized()
     //videoListBox.setBounds(r.removeFromTop(30).removeFromLeft(30));
 }
 
-VispiControllerVstAudioProcessorEditor::VideoListboxContents::VideoListboxContents()
+VispiControllerVstAudioProcessorEditor::VideoListboxContents::VideoListboxContents(const std::vector<String>* names)
 {
-    
+    fileNames = names;
 }
 
 int VispiControllerVstAudioProcessorEditor::VideoListboxContents::getNumRows() {
