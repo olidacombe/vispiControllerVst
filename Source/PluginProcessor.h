@@ -59,6 +59,16 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     //int getVideoSelection() { return videoSelection; }
+    const String getFileName(const int n) {
+        const ScopedLock fileNamesLock(fileNamesMutex);
+        if(n < fileNames.size())
+            return fileNames.at(n);
+        return "";
+    }
+    const int getNumFiles() {
+        //const ScopedLock fileNamesLock(fileNamesMutex);
+        return fileNames.size();
+    }
 
 private:
     int videoSelectionCC;
@@ -69,6 +79,8 @@ private:
     void processVideoSelection(const int n);
     bool loadPlaylist(const String& path);
     
+    std::vector<String> fileNames;
+    CriticalSection fileNamesMutex;
     OSCMessenger messenger;
     
     //==============================================================================

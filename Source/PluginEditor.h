@@ -32,18 +32,16 @@ private:
     ListBox videoListBox;
 
     VispiControllerVstAudioProcessor& processor;
-
-    std::vector<String> fileNames;
     
     class VideoListboxContents : public ListBoxModel
     {
     public:
-        VideoListboxContents(const std::vector<String> *names);
+        VideoListboxContents(VispiControllerVstAudioProcessor& p);
         int getNumRows() override;
         
         void paintListBoxItem(int rowNumber, Graphics& g, int width, int height, bool rowIsSelected) override;
     private:
-        const std::vector<String> *fileNames;
+        VispiControllerVstAudioProcessor& processor;
     };
     
     ScopedPointer<VideoListboxContents> videoListboxModel;

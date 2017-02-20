@@ -20,7 +20,7 @@ VispiControllerVstAudioProcessorEditor::VispiControllerVstAudioProcessorEditor (
     // editor's size to whatever you need it to be.
     setSize (400, 300);
     
-    videoListboxModel = new VideoListboxContents(&fileNames);
+    videoListboxModel = new VideoListboxContents(processor);
     videoListBox.setModel(videoListboxModel);
     addAndMakeVisible(videoListBox);
 }
@@ -51,18 +51,18 @@ void VispiControllerVstAudioProcessorEditor::resized()
     //videoListBox.setBounds(r.removeFromTop(30).removeFromLeft(30));
 }
 
-VispiControllerVstAudioProcessorEditor::VideoListboxContents::VideoListboxContents(const std::vector<String>* names)
-{
-    fileNames = names;
-}
+VispiControllerVstAudioProcessorEditor::VideoListboxContents::VideoListboxContents(VispiControllerVstAudioProcessor& p) : processor(p)
+{}
 
 int VispiControllerVstAudioProcessorEditor::VideoListboxContents::getNumRows() {
-    return 20;
+    return processor.getNumFiles();
 }
 
 void VispiControllerVstAudioProcessorEditor::VideoListboxContents::paintListBoxItem(int rowNumber, Graphics& g, int width, int height, bool rowIsSelected)
 {
+    if(rowNumber >= getNumRows()) return;
     g.setColour(Colours::black);
     g.setFont(height * 0.7f);
-    g.drawText("Thingaaay " + String(rowNumber + 1), 5, 0, width, height, Justification::centredLeft, true);
+    // ScopedLock...?
+    g.drawText(processor.getFileName(rowNumber), 5, 0, width, height, Justification::centredLeft, true);
 }
