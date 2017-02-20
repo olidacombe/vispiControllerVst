@@ -202,7 +202,12 @@ bool VispiControllerVstAudioProcessor::loadPlaylist(const String& path) {
     
     while(track != nullptr)
     {
-        std::cout<< "a track!" <<std::endl;
+        
+        
+        XmlElement * location = track->getChildByName("location");
+        if(location != nullptr) {
+            std::cout<< URL::removeEscapeChars(location->getAllSubText()) <<std::endl;
+        }
         
         track = track->getNextElementWithTagName("track");
     }
