@@ -32,6 +32,10 @@ VispiControllerVstAudioProcessorEditor::~VispiControllerVstAudioProcessorEditor(
     // before the list it references
 }
 
+void VispiControllerVstAudioProcessorEditor::changeListenerCallback(ChangeBroadcaster *source) {
+    
+}
+
 //==============================================================================
 void VispiControllerVstAudioProcessorEditor::paint (Graphics& g)
 {

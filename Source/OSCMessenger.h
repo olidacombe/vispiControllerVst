@@ -14,7 +14,8 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <deque>
 
-class OSCMessenger : public Thread
+class OSCMessenger : public Thread,
+                    public ChangeBroadcaster
 {
 public:
     OSCMessenger(String targetHost, int targetPort);

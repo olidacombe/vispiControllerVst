@@ -18,12 +18,15 @@
 //==============================================================================
 /**
 */
-class VispiControllerVstAudioProcessorEditor  : public AudioProcessorEditor
+class VispiControllerVstAudioProcessorEditor  : public AudioProcessorEditor,
+                                                public ChangeListener
 {
 public:
     VispiControllerVstAudioProcessorEditor (VispiControllerVstAudioProcessor&);
     ~VispiControllerVstAudioProcessorEditor();
 
+    void changeListenerCallback(ChangeBroadcaster *source) override;
+    
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
