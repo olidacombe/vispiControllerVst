@@ -75,6 +75,12 @@ public:
     
     static const String xspfUriToString(const String& uri);
 
+    void reloadPlaylist() {
+        String playlistLoadSuccess = loadPlaylist(playlistFilename) ? "playlist ok" : "playlist fail";
+        std::cout << playlistLoadSuccess << std::endl;
+    }
+    
+    void processVideoSelection(const int n);
     
 private:
     int videoSelectionCC;
@@ -82,7 +88,6 @@ private:
     String playlistFilename;
     ScopedPointer<XmlElement> playlistData;
     
-    void processVideoSelection(const int n);
     bool loadPlaylist(const String& path);
     
     std::vector<String> fileNames;

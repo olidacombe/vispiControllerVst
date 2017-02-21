@@ -19,13 +19,15 @@
 /**
 */
 class VispiControllerVstAudioProcessorEditor  : public AudioProcessorEditor,
-                                                public ChangeListener
+                                                public ChangeListener,
+                                                public ButtonListener
 {
 public:
     VispiControllerVstAudioProcessorEditor (VispiControllerVstAudioProcessor&);
     ~VispiControllerVstAudioProcessorEditor();
 
     void changeListenerCallback(ChangeBroadcaster *source) override;
+    void buttonClicked (Button* button) override;
     
     //==============================================================================
     void paint (Graphics&) override;
@@ -33,9 +35,12 @@ public:
 
 private:
     ListBox videoListBox;
+    TextButton reloadButton;
 
     VispiControllerVstAudioProcessor& processor;
     OSCMessenger* messenger;
+    
+    void reloadPlaylist();
     
     class VideoListboxContents : public ListBoxModel
     {
@@ -44,6 +49,8 @@ private:
         int getNumRows() override;
         
         void paintListBoxItem(int rowNumber, Graphics& g, int width, int height, bool rowIsSelected) override;
+        
+        void listBoxItemClicked(int row, const MouseEvent& e) override;
     private:
         VispiControllerVstAudioProcessor& processor;
     };

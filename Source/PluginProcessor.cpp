@@ -28,8 +28,7 @@ VispiControllerVstAudioProcessor::VispiControllerVstAudioProcessor()
     videoSelectionCC(99)
 #endif
 {
-    String playlistStatus = loadPlaylist(playlistFilename) ? "Playlist ok" : "Playlist fail";
-    std::cout << playlistStatus << std::endl;
+    reloadPlaylist();
 }
 
 VispiControllerVstAudioProcessor::~VispiControllerVstAudioProcessor()

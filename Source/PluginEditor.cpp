@@ -24,6 +24,10 @@ VispiControllerVstAudioProcessorEditor::VispiControllerVstAudioProcessorEditor (
     videoListBox.setModel(videoListboxModel);
     addAndMakeVisible(videoListBox);
     
+    reloadButton.setButtonText("Reload Playlist");
+    addAndMakeVisible(reloadButton);
+    reloadButton.addListener(this);
+    
     messenger = processor.getMessenger();
     messenger->addChangeListener(this);
 }
@@ -31,6 +35,7 @@ VispiControllerVstAudioProcessorEditor::VispiControllerVstAudioProcessorEditor (
 VispiControllerVstAudioProcessorEditor::~VispiControllerVstAudioProcessorEditor()
 {
     messenger->removeChangeListener(this);
+    reloadButton.removeListener(this);
     // delete this:
     videoListboxModel = nullptr;
     // before the list it references
@@ -41,6 +46,22 @@ void VispiControllerVstAudioProcessorEditor::changeListenerCallback(ChangeBroadc
         //std::cout << "word from the messenger" << std::endl;
         videoListBox.selectRow(processor.getSelectedVideoIndex());
     }
+}
+
+void VispiControllerVstAudioProcessorEditor::buttonClicked(Button* button)
+{
+    if(button == &reloadButton) {
+        reloadPlaylist();
+    }
+    
+}
+
+void VispiControllerVstAudioProcessorEditor::reloadPlaylist()
+{
+    processor.reloadPlaylist();
+    videoListBox.updateContent();
+    videoListBox.deselectAllRows();
+    
 }
 
 //==============================================================================
@@ -58,8 +79,9 @@ void VispiControllerVstAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     Rectangle<int> r (getLocalBounds().reduced(8));
-    videoListBox.setBounds(r.withSize(250, 180));
-    //videoListBox.setBounds(r.removeFromTop(30).removeFromLeft(30));
+    //videoListBox.setBounds(r.withSize(250, 180));
+    videoListBox.setBounds(r.removeFromLeft(220));
+    reloadButton.setBounds(r.removeFromTop(40).reduced(10));
 }
 
 VispiControllerVstAudioProcessorEditor::VideoListboxContents::VideoListboxContents(VispiControllerVstAudioProcessor& p) : processor(p)
@@ -79,4 +101,11 @@ void VispiControllerVstAudioProcessorEditor::VideoListboxContents::paintListBoxI
     g.setFont(height * 0.7f);
     // ScopedLock...?
     g.drawText(processor.getFileName(rowNumber), 5, 0, width, height, Justification::centredLeft, true);
+}
+
+void VispiControllerVstAudioProcessorEditor::VideoListboxContents::listBoxItemClicked(int row, const MouseEvent& e)
+{
+    if(row != -1) {
+        processor.processVideoSelection(row);
+    }
 }
