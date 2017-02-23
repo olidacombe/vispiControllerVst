@@ -23,6 +23,12 @@ class VispiControllerVstAudioProcessorEditor  : public AudioProcessorEditor,
                                                 public ButtonListener
 {
 public:
+    const enum {
+        INDEX_COLUMN = 1,
+        NAME_COLUMN = 2,
+        INT_MIDI_FORMAT = 3
+    };
+    
     VispiControllerVstAudioProcessorEditor (VispiControllerVstAudioProcessor&);
     ~VispiControllerVstAudioProcessorEditor();
 
@@ -57,6 +63,16 @@ private:
         void cellClicked(int rowNumber, int columnId, const MouseEvent& e) override;
     private:
         VispiControllerVstAudioProcessor& processor;
+    };
+    
+    class VideoTableHeader : public TableHeaderComponent
+    {
+    public:
+        VideoTableHeader();
+        bool isNoteStyle() { return noteStyleDisplay; }
+        void columnClicked(int columnId, const ModifierKeys& mods) override;
+    private:
+        bool noteStyleDisplay;
     };
     
     ScopedPointer<VideoTableContents> videoTableModel;

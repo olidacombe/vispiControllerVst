@@ -20,8 +20,7 @@ VispiControllerVstAudioProcessorEditor::VispiControllerVstAudioProcessorEditor (
     // editor's size to whatever you need it to be.
     setSize (400, 300);
     
-    videoTable.getHeader().addColumn("Index", 1, 50, 50, -1, TableHeaderComponent::defaultFlags);
-    videoTable.getHeader().addColumn("Name", 2, 120, 50, -1, TableHeaderComponent::defaultFlags);
+    videoTable.setHeader(new VideoTableHeader());
     
     videoTableModel = new VideoTableContents(processor);
     videoTable.setModel(videoTableModel);
@@ -105,10 +104,10 @@ void VispiControllerVstAudioProcessorEditor::VideoTableContents::paintCell(Graph
     // ScopedLock...?
     String content;
     switch(columnId) {
-        case 1:
+        case INDEX_COLUMN:
             content = String(rowNumber);
             break;
-        case 2:
+        case NAME_COLUMN:
             content = processor.getFileName(rowNumber);
             break;
         default:
@@ -133,4 +132,33 @@ void VispiControllerVstAudioProcessorEditor::VideoTableContents::cellClicked(int
     if(rowNumber != -1) {
         processor.processVideoSelection(rowNumber);
     }
+}
+
+void VispiControllerVstAudioProcessorEditor::VideoTableHeader::columnClicked(int columnId, const ModifierKeys& mods)
+{
+    std::cout << "columnClicked" << std::endl;
+    switch(columnId) {
+        case(INDEX_COLUMN):
+            // set flag to toggle note name / int display
+            noteStyleDisplay = !noteStyleDisplay;
+            std::cout << "noteStyleDisplay: " << noteStyleDisplay << std::endl;
+            //break;
+            /*
+        case(NAME_COLUMN):
+            // don't sort
+            break;
+             */
+        default:
+            // defer to base
+            TableHeaderComponent::columnClicked(columnId, mods);
+            break;
+    }
+}
+
+VispiControllerVstAudioProcessorEditor::VideoTableHeader::VideoTableHeader()
+{
+    // gross - think more about where to set these things correctly
+    // resized if possible
+    addColumn("Index", INDEX_COLUMN, 50, 50, -1, defaultFlags);
+    addColumn("Name", NAME_COLUMN, 120, 50, -1, defaultFlags);
 }
