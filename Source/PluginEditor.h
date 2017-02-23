@@ -34,7 +34,7 @@ public:
     void resized() override;
 
 private:
-    ListBox videoListBox;
+    TableListBox videoTable;
     TextButton reloadButton;
 
     VispiControllerVstAudioProcessor& processor;
@@ -42,20 +42,24 @@ private:
     
     void reloadPlaylist();
     
-    class VideoListboxContents : public ListBoxModel
+    class VideoTableContents : public TableListBoxModel
     {
     public:
-        VideoListboxContents(VispiControllerVstAudioProcessor& p);
+        VideoTableContents(VispiControllerVstAudioProcessor& p);
         int getNumRows() override;
         
-        void paintListBoxItem(int rowNumber, Graphics& g, int width, int height, bool rowIsSelected) override;
+        void paintRowBackground (Graphics&,
+                                 int rowNumber,
+                                 int width, int height,
+                                 bool rowIsSelected) override;
+        void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
         
-        void listBoxItemClicked(int row, const MouseEvent& e) override;
+        void cellClicked(int rowNumber, int columnId, const MouseEvent& e) override;
     private:
         VispiControllerVstAudioProcessor& processor;
     };
     
-    ScopedPointer<VideoListboxContents> videoListboxModel;
+    ScopedPointer<VideoTableContents> videoTableModel;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VispiControllerVstAudioProcessorEditor)
 };
