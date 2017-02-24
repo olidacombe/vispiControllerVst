@@ -25,8 +25,9 @@ class VispiControllerVstAudioProcessorEditor  : public AudioProcessorEditor,
 public:
     const enum {
         INDEX_COLUMN = 1,
-        NAME_COLUMN = 2,
-        INT_MIDI_FORMAT = 3
+        NOTE_COLUMN = 2,
+        NAME_COLUMN = 3
+        //INT_MIDI_FORMAT = 3
     };
     
     VispiControllerVstAudioProcessorEditor (VispiControllerVstAudioProcessor&);
@@ -70,7 +71,6 @@ private:
     public:
         VideoTableHeader();
         bool isNoteStyle() { return noteStyleDisplay; }
-        void columnClicked(int columnId, const ModifierKeys& mods) override;
     private:
         bool noteStyleDisplay;
     };

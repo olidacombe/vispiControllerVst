@@ -20,6 +20,7 @@ VispiControllerVstAudioProcessorEditor::VispiControllerVstAudioProcessorEditor (
     // editor's size to whatever you need it to be.
     setSize (400, 300);
     
+    //videoTableHeader = new VideoTableHeader();
     videoTable.setHeader(new VideoTableHeader());
     
     videoTableModel = new VideoTableContents(processor);
@@ -38,6 +39,8 @@ VispiControllerVstAudioProcessorEditor::~VispiControllerVstAudioProcessorEditor(
 {
     messenger->removeChangeListener(this);
     reloadButton.removeListener(this);
+    
+    //videoTableHeader = nullptr;
     // delete this:
     videoTableModel = nullptr;
     // before the list it references
@@ -107,6 +110,9 @@ void VispiControllerVstAudioProcessorEditor::VideoTableContents::paintCell(Graph
         case INDEX_COLUMN:
             content = String(rowNumber);
             break;
+        case NOTE_COLUMN:
+            content = MidiMessage::getMidiNoteName(rowNumber, true, true, 3);
+            break;
         case NAME_COLUMN:
             content = processor.getFileName(rowNumber);
             break;
@@ -134,31 +140,12 @@ void VispiControllerVstAudioProcessorEditor::VideoTableContents::cellClicked(int
     }
 }
 
-void VispiControllerVstAudioProcessorEditor::VideoTableHeader::columnClicked(int columnId, const ModifierKeys& mods)
-{
-    std::cout << "columnClicked" << std::endl;
-    switch(columnId) {
-        case(INDEX_COLUMN):
-            // set flag to toggle note name / int display
-            noteStyleDisplay = !noteStyleDisplay;
-            std::cout << "noteStyleDisplay: " << noteStyleDisplay << std::endl;
-            //break;
-            /*
-        case(NAME_COLUMN):
-            // don't sort
-            break;
-             */
-        default:
-            // defer to base
-            TableHeaderComponent::columnClicked(columnId, mods);
-            break;
-    }
-}
 
 VispiControllerVstAudioProcessorEditor::VideoTableHeader::VideoTableHeader()
 {
     // gross - think more about where to set these things correctly
     // resized if possible
     addColumn("Index", INDEX_COLUMN, 50, 50, -1, defaultFlags);
+    addColumn("Note", NOTE_COLUMN, 50, 50, -1, defaultFlags);
     addColumn("Name", NAME_COLUMN, 120, 50, -1, defaultFlags);
 }
