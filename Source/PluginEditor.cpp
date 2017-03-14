@@ -78,6 +78,9 @@ void VispiControllerVstAudioProcessorEditor::reloadPlaylist()
     videoTable.deselectAllRows();
     videoTable.autoSizeAllColumns();
     
+    OSCMessage reloadMsg("/playlist/reload", true);
+    messenger->pushRawOscMsg(reloadMsg);
+    
 }
 
 //==============================================================================
