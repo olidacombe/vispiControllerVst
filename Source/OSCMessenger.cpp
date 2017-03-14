@@ -25,39 +25,44 @@ OSCMessenger::OSCMessenger(String targetHost, int targetPort) :
 }
 
 void OSCMessenger::pushVideoFile(const String& name) {
-    
-    const ScopedLock mutex(videoSelectionMutex);
-    videoSelections.push_back(name);
-    notify();
 
+    OSCMessage newVideoSelection("/video/playfile", name);
+    pushRawOscMsg(newVideoSelection);
+
+}
+
+void OSCMessenger::pushRawOscMsg(const OSCMessage& m) {
+    const ScopedLock mutex(oscMessagesMutex);
+    oscMessages.push_back(m);
+    notify();
 }
 
 void OSCMessenger::run()
 {
     while (! threadShouldExit())
     {
-
-        videoSelectionMutex.enter();
+        oscMessagesMutex.enter();
         
-        if(!videoSelections.empty()) {
-            String videoSelection = videoSelections.front();
-            videoSelections.pop_front();
+        if(!oscMessages.empty()) {
+            OSCMessage message = oscMessages.front();
+            oscMessages.pop_front();
             
-            videoSelectionMutex.exit();
+            oscMessagesMutex.exit();
             
-            sendVideoSelection(videoSelection);
+            sendOscMsg(message);
             sendChangeMessage();
         } else {
-            videoSelectionMutex.exit();
+            oscMessagesMutex.exit();
             wait(-1);
         }
             
     }   
 }
 
-bool OSCMessenger::sendVideoSelection(const String& name) {
-    if(!sender.send("/video/playfile", name)) {
-        showConnectionErrorMessage("Error: could not send Video Selection");
+
+bool OSCMessenger::sendOscMsg(const OSCMessage& m) {
+    if(!sender.send(m)) {
+        showConnectionErrorMessage("Error: could not send OSC message");
         return false;
     }
     return true;

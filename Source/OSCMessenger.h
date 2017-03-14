@@ -22,15 +22,16 @@ public:
     ~OSCMessenger() { stopThread(1000); }
     void run() override;
     void pushVideoFile(const String& name);
+    void pushRawOscMsg(const OSCMessage& m);
 private:
     String host;
     int port;
     OSCSender sender;
     
-    CriticalSection videoSelectionMutex;
-    std::deque<String> videoSelections;
+    CriticalSection oscMessagesMutex;
+    std::deque<OSCMessage> oscMessages;
     
-    bool sendVideoSelection(const String& name);
+    bool sendOscMsg(const OSCMessage& m);
     
     void showConnectionErrorMessage (const String& messageText)
     {
