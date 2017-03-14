@@ -29,8 +29,10 @@ public:
         NAME_COLUMN = 3
         //INT_MIDI_FORMAT = 3
     };
+    //typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
+    typedef AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
     
-    VispiControllerVstAudioProcessorEditor (VispiControllerVstAudioProcessor&);
+    VispiControllerVstAudioProcessorEditor (VispiControllerVstAudioProcessor&, AudioProcessorValueTreeState& vts);
     ~VispiControllerVstAudioProcessorEditor();
 
     void changeListenerCallback(ChangeBroadcaster *source) override;
@@ -41,9 +43,14 @@ public:
     void resized() override;
 
 private:
+    
+    ToggleButton loopButton;
+    ScopedPointer<ButtonAttachment> loopButtonAttachment;
+    
     TableListBox videoTable;
     TextButton reloadButton;
 
+    AudioProcessorValueTreeState& valueTreeState;
     VispiControllerVstAudioProcessor& processor;
     OSCMessenger* messenger;
     

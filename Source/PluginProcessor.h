@@ -83,6 +83,8 @@ public:
     void processVideoSelection(const int n);
     
 private:
+    AudioProcessorValueTreeState parameters;
+    
     int videoSelectionCC;
     int selectedVideoIndex;
     String playlistFilename;

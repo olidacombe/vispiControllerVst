@@ -13,9 +13,9 @@
 
 
 //==============================================================================
-VispiControllerVstAudioProcessor::VispiControllerVstAudioProcessor()
+VispiControllerVstAudioProcessor::VispiControllerVstAudioProcessor() :
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
+     AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
                       #if ! JucePlugin_IsSynth
                        .withInput  ("Input",  AudioChannelSet::stereo(), true)
@@ -23,12 +23,30 @@ VispiControllerVstAudioProcessor::VispiControllerVstAudioProcessor()
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
                        ),
+
+#endif
     messenger("vispi", 12345),
     playlistFilename("~/live_videos.xspf"),
-    videoSelectionCC(99)
-#endif
+    videoSelectionCC(99),
+    parameters(*this, nullptr)
 {
     reloadPlaylist();
+    parameters.createAndAddParameter ("loop", "Loop", String(),
+                                      NormalisableRange<float> (0.0f, 1.0f, 1.0f), 0.0f,
+                                      [](float value)
+                                      {
+                                          // value to text function
+                                          return value < 0.5 ? "Once" : "Loop";
+                                      },
+                                      [](const String& text)
+                                      {
+                                          // text to value function
+                                          if (text == "Once")    return 0.0f;
+                                          if (text == "Loop")  return 1.0f;
+                                          return 0.0f;
+                                      });
+    
+    parameters.state = ValueTree(Identifier("vispiController"));
 }
 
 VispiControllerVstAudioProcessor::~VispiControllerVstAudioProcessor()
@@ -236,21 +254,22 @@ bool VispiControllerVstAudioProcessor::hasEditor() const
 
 AudioProcessorEditor* VispiControllerVstAudioProcessor::createEditor()
 {
-    return new VispiControllerVstAudioProcessorEditor (*this);
+    return new VispiControllerVstAudioProcessorEditor (*this, parameters);
 }
 
 //==============================================================================
 void VispiControllerVstAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    ScopedPointer<XmlElement> xml (parameters.state.createXml());
+    copyXmlToBinary (*xml, destData);
 }
 
 void VispiControllerVstAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    ScopedPointer<XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
+    if (xmlState != nullptr)
+        if (xmlState->hasTagName (parameters.state.getType()))
+            parameters.state = ValueTree::fromXml (*xmlState);
 }
 
 //==============================================================================

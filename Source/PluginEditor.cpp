@@ -13,8 +13,8 @@
 
 
 //==============================================================================
-VispiControllerVstAudioProcessorEditor::VispiControllerVstAudioProcessorEditor (VispiControllerVstAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p), videoTable("Video list", nullptr)
+VispiControllerVstAudioProcessorEditor::VispiControllerVstAudioProcessorEditor (VispiControllerVstAudioProcessor& p, AudioProcessorValueTreeState& vts)
+    : AudioProcessorEditor(&p), processor(p), valueTreeState(vts), videoTable("Video list", nullptr)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
