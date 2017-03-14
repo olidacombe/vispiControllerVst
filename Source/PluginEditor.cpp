@@ -44,6 +44,8 @@ VispiControllerVstAudioProcessorEditor::~VispiControllerVstAudioProcessorEditor(
     messenger->removeChangeListener(this);
     reloadButton.removeListener(this);
     
+    loopButtonAttachment = nullptr;
+    
     //videoTableHeader = nullptr;
     // delete this:
     videoTableModel = nullptr;
