@@ -35,6 +35,10 @@ VispiControllerVstAudioProcessorEditor::VispiControllerVstAudioProcessorEditor (
     addAndMakeVisible(loopButton);
     loopButtonAttachment = new ButtonAttachment (valueTreeState, "loop", loopButton);
     
+    stopButton.setButtonText("Stop");
+    addAndMakeVisible(stopButton);
+    stopButtonAttachment = new ButtonAttachment (valueTreeState, "stop", stopButton);
+    
     messenger = processor.getMessenger();
     messenger->addChangeListener(this);
 }
@@ -96,6 +100,7 @@ void VispiControllerVstAudioProcessorEditor::resized()
     videoTable.autoSizeAllColumns();
     reloadButton.setBounds(r.removeFromTop(40).reduced(10));
     loopButton.setBounds(r.removeFromTop(40).reduced(10));
+    stopButton.setBounds(r.removeFromTop(40).reduced(10));
 }
 
 VispiControllerVstAudioProcessorEditor::VideoTableContents::VideoTableContents(VispiControllerVstAudioProcessor& p) : processor(p)

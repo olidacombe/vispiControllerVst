@@ -42,10 +42,20 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+    class MomentaryTextButton : public TextButton
+    {
+        void buttonStateChanged() override
+        {
+            setToggleState(isDown(), NotificationType::sendNotification);
+        }
+    };
+    
 private:
     
     ToggleButton loopButton;
     ScopedPointer<ButtonAttachment> loopButtonAttachment;
+    MomentaryTextButton stopButton;
+    ScopedPointer<ButtonAttachment> stopButtonAttachment;
     
     TableListBox videoTable;
     TextButton reloadButton;

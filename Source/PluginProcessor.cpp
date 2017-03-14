@@ -46,6 +46,21 @@ VispiControllerVstAudioProcessor::VispiControllerVstAudioProcessor() :
                                           return 0.0f;
                                       });
     parameters.addParameterListener("loop", this);
+    parameters.createAndAddParameter ("stop", "Stop", String(),
+                                      NormalisableRange<float> (0.0f, 1.0f, 1.0f), 0.0f,
+                                      [](float value)
+                                      {
+                                          // value to text function
+                                          return value < 0.5 ? "Stop" : "Stopped";
+                                      },
+                                      [](const String& text)
+                                      {
+                                          // text to value function
+                                          if (text == "Stop")    return 0.0f;
+                                          if (text == "Stopped")  return 1.0f;
+                                          return 0.0f;
+                                      });
+    parameters.addParameterListener("stop", this);
     
     parameters.state = ValueTree(Identifier("vispiController"));
 }
@@ -211,6 +226,9 @@ void VispiControllerVstAudioProcessor::parameterChanged(const juce::String &para
     if(parameterID == "loop") {
         OSCMessage loopMessage("/loop", (newValue > 0.5)?true:false);
         messenger.pushRawOscMsg(loopMessage);
+    } else if(parameterID == "stop" && newValue > 0.5) {
+        OSCMessage stopMessage("/stop", true);
+        messenger.pushRawOscMsg(stopMessage);
     }
 }
 
