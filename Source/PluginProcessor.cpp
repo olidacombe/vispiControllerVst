@@ -45,6 +45,7 @@ VispiControllerVstAudioProcessor::VispiControllerVstAudioProcessor() :
                                           if (text == "Loop")  return 1.0f;
                                           return 0.0f;
                                       });
+    parameters.addParameterListener("loop", this);
     
     parameters.state = ValueTree(Identifier("vispiController"));
 }
@@ -206,6 +207,12 @@ void VispiControllerVstAudioProcessor::processVideoSelection(const int n) {
     }
 }
 
+void VispiControllerVstAudioProcessor::parameterChanged(const juce::String &parameterID, float newValue) {
+    if(parameterID == "loop") {
+        OSCMessage loopMessage("/loop", (newValue > 0.5)?true:false);
+        messenger.pushRawOscMsg(loopMessage);
+    }
+}
 
 bool VispiControllerVstAudioProcessor::loadPlaylist(const String& path) {
     

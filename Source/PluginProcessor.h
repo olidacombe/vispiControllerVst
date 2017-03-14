@@ -18,7 +18,9 @@
 //==============================================================================
 /**
 */
-class VispiControllerVstAudioProcessor  : public AudioProcessor
+class VispiControllerVstAudioProcessor  :
+        public AudioProcessor,
+        public AudioProcessorValueTreeState::Listener
 {
 public:
     //==============================================================================
@@ -81,6 +83,8 @@ public:
     }
     
     void processVideoSelection(const int n);
+    
+    void parameterChanged(const String &parameterID, float newValue) override;
     
 private:
     AudioProcessorValueTreeState parameters;
