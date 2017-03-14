@@ -31,6 +31,10 @@ VispiControllerVstAudioProcessorEditor::VispiControllerVstAudioProcessorEditor (
     addAndMakeVisible(reloadButton);
     reloadButton.addListener(this);
     
+    loopButton.setButtonText("Loop");
+    addAndMakeVisible(loopButton);
+    loopButtonAttachment = new ButtonAttachment (valueTreeState, "loop", loopButton);
+    
     messenger = processor.getMessenger();
     messenger->addChangeListener(this);
 }

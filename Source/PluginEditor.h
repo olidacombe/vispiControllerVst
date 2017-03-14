@@ -32,7 +32,7 @@ public:
     //typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
     typedef AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
     
-    VispiControllerVstAudioProcessorEditor (VispiControllerVstAudioProcessor&, AudioProcessorValueTreeState& vts);
+    VispiControllerVstAudioProcessorEditor (VispiControllerVstAudioProcessor&, AudioProcessorValueTreeState&);
     ~VispiControllerVstAudioProcessorEditor();
 
     void changeListenerCallback(ChangeBroadcaster *source) override;
