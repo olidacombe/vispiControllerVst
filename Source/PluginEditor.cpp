@@ -95,6 +95,7 @@ void VispiControllerVstAudioProcessorEditor::resized()
     videoTable.setBounds(r.removeFromLeft(220));
     videoTable.autoSizeAllColumns();
     reloadButton.setBounds(r.removeFromTop(40).reduced(10));
+    loopButton.setBounds(r.removeFromTop(40).reduced(10));
 }
 
 VispiControllerVstAudioProcessorEditor::VideoTableContents::VideoTableContents(VispiControllerVstAudioProcessor& p) : processor(p)
