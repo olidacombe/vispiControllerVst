@@ -72,11 +72,17 @@ public:
     
     
     VideoTableContents* getModel() { return static_cast<VideoTableContents*>(TableListBox::getModel()); }
+    
+    /*
     int getNumRows() override {
+        static int prevNumRows = 0;
+        int newNumRows = 0;
         VideoTableContents* model = getModel();
-        if(model == nullptr) return 5;
-        return getModel()->getNumRows();
+        if(model != nullptr)
+            newNumRows = model->getNumRows();
+        return newNumRows;
     }
+    */
         
     //==============================================================================
     // These methods implement the DragAndDropTarget interface, and allow our component
@@ -177,7 +183,8 @@ public:
         //hoveringFiles.clear();
         //model->clearHoveringFiles();
         getModel()->filesDropped();
-        repaint();
+        updateContent();
+        //repaint();
     }
 private:
 
