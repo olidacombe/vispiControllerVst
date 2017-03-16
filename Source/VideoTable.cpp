@@ -121,7 +121,9 @@ void VideoTableContents::itemDropped()
     dragSourceIndex = -1;
 }
 
-
+void VideoTableContents::deleteFile(const int i) {
+    processor.deleteFile(i);
+}
 
 VideoTableHeader::VideoTableHeader()
 {

@@ -110,6 +110,16 @@ public:
         }
     }
     
+    void deleteFile(const int i) {
+        DBG("pluginProcessor::deleteFile");
+        const ScopedLock fileNamesLock(fileNamesMutex);
+        try {
+            fileNames.erase(fileNames.begin() + i);
+        } catch (const std::out_of_range& e) {
+            DBG("processor deleteFile out of range error");
+        }
+    }
+    
     void parameterChanged(const String &parameterID, float newValue) override;
     
 private:

@@ -40,6 +40,7 @@ public:
     
     void filesDropped();
     void itemDropped();
+    void deleteFile(const int i);
     
     void setDragHoverIndex(const int i) { dragHoverIndex = i; }
     void setDragSourceIndex(const int i)
@@ -160,6 +161,14 @@ public:
         getModel()->filesDropped();
         updateContent();
         //repaint();
+    }
+    
+    
+    void deleteKeyPressed (int currentSelectedRow) override {
+        // remove current row from processor->fileNames....
+        //DBG("VideoTable::deleteKeyPressed");
+        getModel()->deleteFile(currentSelectedRow);
+        updateContent();
     }
 private:
 

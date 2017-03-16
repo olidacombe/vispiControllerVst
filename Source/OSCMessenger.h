@@ -19,7 +19,7 @@ class OSCMessenger : public Thread,
 {
 public:
     OSCMessenger(String targetHost, int targetPort);
-    ~OSCMessenger() { stopThread(1000); }
+    ~OSCMessenger() { stopThread(10000); }
     void run() override;
     void pushVideoFile(const String& name);
     void pushRawOscMsg(const OSCMessage& m);
