@@ -57,7 +57,8 @@ public:
 
     void itemDropped (const SourceDetails& dragSourceDetails) override
     {
-        DBG("Items dropped: " + dragSourceDetails.description.toString());
+        int row = getInsertionIndexForPosition(dragSourceDetails.localPosition.getX(), dragSourceDetails.localPosition.getY());
+        DBG("Item " + dragSourceDetails.description.toString() + " dropped at " + String(row));
 
         somethingIsBeingDraggedOver = false;
         repaint();
@@ -90,9 +91,10 @@ public:
         repaint();
     }
 
-    void filesDropped (const StringArray& files, int /*x*/, int /*y*/) override
+    void filesDropped (const StringArray& files, int x, int y) override
     {
-        DBG("Files dropped: " + files.joinIntoString ("\n"));
+        int row = getInsertionIndexForPosition(x,y);
+        DBG("Files dropped: " + files.joinIntoString("\n") + "\nat row " + String(row));
 
         somethingIsBeingDraggedOver = false;
         repaint();
@@ -114,6 +116,9 @@ public:
     void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
         
     void cellClicked(int rowNumber, int columnId, const MouseEvent& e) override;
+    
+    var getDragSourceDescription (const SparseSet<int>& selectedRows) override;
+
 private:
     VispiControllerVstAudioProcessor& processor;
 };

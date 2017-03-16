@@ -62,6 +62,24 @@ void VideoTableContents::cellClicked(int rowNumber, int columnId, const MouseEve
     }
 }
 
+var VideoTableContents::getDragSourceDescription (const SparseSet<int>& selectedRows)
+{
+    // for our drag description, we'll just make a comma-separated list of the selected row
+    // numbers - this will be picked up by the drag target and displayed in its box.
+    /*
+    StringArray rows;
+
+    for (int i = 0; i < selectedRows.size(); ++i)
+        rows.add (String (selectedRows[i] + 1));
+
+    return rows.joinIntoString (", ");
+    */
+    // we only allow one selected row
+    if(selectedRows.size()>0) return selectedRows[0];
+    return var();
+}
+
+
 
 VideoTableHeader::VideoTableHeader()
 {
