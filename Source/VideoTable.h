@@ -54,6 +54,10 @@ public:
     {
         int row = dragSourceDetailsToRowNumber(dragSourceDetails);
         DBG("Item " + dragSourceDetails.description.toString() + " hovering at " + String(row));
+        // looky here: http://stackoverflow.com/questions/6224830/c-trying-to-swap-values-in-a-vector
+        // want to swap values within processor.fileNames - but not get messed-up as we drag over a second.. element
+        // also, that vector is hidden away inside processor.  Might just pass some stuff from here and call 
+        // repaint.
     }
 
     void itemDragExit (const SourceDetails& /*dragSourceDetails*/) override
