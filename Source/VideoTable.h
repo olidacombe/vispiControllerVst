@@ -72,6 +72,11 @@ public:
     
     
     VideoTableContents* getModel() { return static_cast<VideoTableContents*>(TableListBox::getModel()); }
+    int getNumRows() override {
+        VideoTableContents* model = getModel();
+        if(model == nullptr) return 5;
+        return getModel()->getNumRows();
+    }
         
     //==============================================================================
     // These methods implement the DragAndDropTarget interface, and allow our component
