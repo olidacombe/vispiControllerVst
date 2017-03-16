@@ -86,7 +86,6 @@ public:
     void itemDragEnter (const SourceDetails& dragSourceDetails) override
     {
         getModel()->setDragSourceIndex(dragSourceDetails.description);
-        //itemIsBeingDraggedOver = true;
         repaint();
     }
 
@@ -100,7 +99,6 @@ public:
 
     void itemDragExit (const SourceDetails& /*dragSourceDetails*/) override
     {
-        //itemIsBeingDraggedOver = false;
         getModel()->setDragHoverIndex(-1);
         getModel()->setDragSourceIndex(-1);
         repaint();
@@ -108,12 +106,7 @@ public:
 
     void itemDropped (const SourceDetails& dragSourceDetails) override
     {
-        //DBG("Item " + dragSourceDetails.description.toString() + " dropped at " + String(dragHoverIndex));
-        // handle the drop
         getModel()->itemDropped();
-        //itemIsBeingDraggedOver = false;
-        //model->setDragHoverIndex(-1);
-        //odel->setDragSourceIndex(-1);
         repaint();
     }
 
@@ -144,8 +137,8 @@ public:
         for(String& fileName : files) {
             if(hasInterestingFileExtension(fileName)) getModel()->addHoveringFile(fileName);
         }
-        //fileIsBeingDraggedOver = true;
-        updateContent();
+
+        updateContent(); // annoyingly not getting the list to grow here
         repaint();
     }
 
@@ -157,7 +150,6 @@ public:
 
     void fileDragExit (const StringArray& /*files*/) override
     {
-        //fileIsBeingDraggedOver = false;
         getModel()->clearHoveringFiles();
         
         repaint();
@@ -165,10 +157,6 @@ public:
 
     void filesDropped (const StringArray& /*files*/, int x, int y) override
     {
-        //DBG("Files dropped: " + hoveringFiles.joinIntoString("\n") + "\nat row " + String(dragHoverIndex));
-        //fileIsBeingDraggedOver = false;
-        //hoveringFiles.clear();
-        //model->clearHoveringFiles();
         getModel()->filesDropped();
         updateContent();
         //repaint();
