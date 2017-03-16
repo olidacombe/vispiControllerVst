@@ -72,17 +72,7 @@ public:
     
     
     VideoTableContents* getModel() { return static_cast<VideoTableContents*>(TableListBox::getModel()); }
-    
-    /*
-    int getNumRows() override {
-        static int prevNumRows = 0;
-        int newNumRows = 0;
-        VideoTableContents* model = getModel();
-        if(model != nullptr)
-            newNumRows = model->getNumRows();
-        return newNumRows;
-    }
-    */
+
         
     //==============================================================================
     // These methods implement the DragAndDropTarget interface, and allow our component
@@ -159,7 +149,7 @@ public:
         }
         //fileIsBeingDraggedOver = true;
         updateContent();
-        //repaint();
+        repaint();
     }
 
     void fileDragMove (const StringArray& /*files*/, int x, int y) override
