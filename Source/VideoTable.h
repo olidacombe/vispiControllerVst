@@ -26,11 +26,9 @@ class VideoTable : public TableListBox,
                 public FileDragAndDropTarget
 {
 public:
-    VideoTable(const String &componentName=String(), TableListBoxModel *model=nullptr) : TableListBox(componentName, model) {}
+    VideoTable(const String &componentName=String(), TableListBoxModel *model=nullptr)
+        : TableListBox(componentName, model) {}
     
-    int dragSourceDetailsToRowNumber(const SourceDetails& dragSourceDetails) {
-        return getInsertionIndexForPosition(dragSourceDetails.localPosition.getX(), dragSourceDetails.localPosition.getY());
-    }
     
     //==============================================================================
     // These methods implement the DragAndDropTarget interface, and allow our component
@@ -44,16 +42,19 @@ public:
         return true;
     }
 
-    void itemDragEnter (const SourceDetails& /*dragSourceDetails*/) override
+    void itemDragEnter (const SourceDetails& dragSourceDetails) override
     {
-        somethingIsBeingDraggedOver = true;
+        dragSourceIndex = dragSourceDetails.description;
+        itemIsBeingDraggedOver = true;
         repaint();
     }
 
     void itemDragMove (const SourceDetails& dragSourceDetails) override
     {
-        int row = dragSourceDetailsToRowNumber(dragSourceDetails);
-        DBG("Item " + dragSourceDetails.description.toString() + " hovering at " + String(row));
+        dragHoverIndex = getInsertionIndexForPosition(
+            dragSourceDetails.localPosition.getX(), dragSourceDetails.localPosition.getY()
+        );
+        DBG("Item " + dragSourceDetails.description.toString() + " hovering at " + String(dragHoverIndex));
         // looky here: http://stackoverflow.com/questions/6224830/c-trying-to-swap-values-in-a-vector
         // want to swap values within processor.fileNames - but not get messed-up as we drag over a second.. element
         // also, that vector is hidden away inside processor.  Might just pass some stuff from here and call 
@@ -62,16 +63,15 @@ public:
 
     void itemDragExit (const SourceDetails& /*dragSourceDetails*/) override
     {
-        somethingIsBeingDraggedOver = false;
+        itemIsBeingDraggedOver = false;
         repaint();
     }
 
     void itemDropped (const SourceDetails& dragSourceDetails) override
     {
-        int row = dragSourceDetailsToRowNumber(dragSourceDetails);
-        DBG("Item " + dragSourceDetails.description.toString() + " dropped at " + String(row));
+        DBG("Item " + dragSourceDetails.description.toString() + " dropped at " + String(dragHoverIndex));
 
-        somethingIsBeingDraggedOver = false;
+        itemIsBeingDraggedOver = false;
         repaint();
     }
 
@@ -79,39 +79,50 @@ public:
     // These methods implement the FileDragAndDropTarget interface, and allow our component
     // to accept drag-and-drop of files..
 
-    bool isInterestedInFileDrag (const StringArray& /*files*/) override
+    bool isInterestedInFileDrag (const StringArray& files) override
     {
         // normally you'd check these files to see if they're something that you're
         // interested in before returning true, but for the demo, we'll say yes to anything..
         return true;
     }
 
-    void fileDragEnter (const StringArray& /*files*/, int /*x*/, int /*y*/) override
+    void fileDragEnter (const StringArray& files, int /*x*/, int /*y*/) override
     {
-        somethingIsBeingDraggedOver = true;
+        // filter out by extension:
+        for(String fileName : files) {
+            if(
+                fileName.matchesWildcard("*.mov", true)
+            ||  fileName.matchesWildcard("*.mp4", true)
+            ) hoveringFiles.add(fileName);
+        }
+        fileIsBeingDraggedOver = true;
         repaint();
     }
 
-    void fileDragMove (const StringArray& /*files*/, int /*x*/, int /*y*/) override
+    void fileDragMove (const StringArray& /*files*/, int x, int y) override
     {
+        dragHoverIndex = getInsertionIndexForPosition(x, y);
     }
 
     void fileDragExit (const StringArray& /*files*/) override
     {
-        somethingIsBeingDraggedOver = false;
+        fileIsBeingDraggedOver = false;
+        hoveringFiles.clear();
         repaint();
     }
 
     void filesDropped (const StringArray& files, int x, int y) override
     {
-        int row = getInsertionIndexForPosition(x,y);
-        DBG("Files dropped: " + files.joinIntoString("\n") + "\nat row " + String(row));
+        DBG("Files dropped: " + files.joinIntoString("\n") + "\nat row " + String(dragHoverIndex));
 
-        somethingIsBeingDraggedOver = false;
+        fileIsBeingDraggedOver = false;
         repaint();
     }
 private:
-    bool somethingIsBeingDraggedOver;
+    bool itemIsBeingDraggedOver, fileIsBeingDraggedOver;
+    int dragHoverIndex, dragSourceIndex;
+    StringArray hoveringFiles;
+
 };
     
 class VideoTableContents : public TableListBoxModel
