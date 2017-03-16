@@ -75,25 +75,32 @@ public:
         repaint();
     }
 
+    bool hasInterestingFileExtension(const String& fileName) {
+        return (
+                fileName.matchesWildcard("*.mov", true)
+            ||  fileName.matchesWildcard("*.mp4", true)
+        );
+    }
+    
     //==============================================================================
     // These methods implement the FileDragAndDropTarget interface, and allow our component
     // to accept drag-and-drop of files..
 
     bool isInterestedInFileDrag (const StringArray& files) override
     {
-        // normally you'd check these files to see if they're something that you're
-        // interested in before returning true, but for the demo, we'll say yes to anything..
-        return true;
+        // filter out by extension:
+        for(String& fileName : files) {
+            if(hasInterestingFileExtension(fileName)) return true;
+        }
+        
+        return false;
     }
 
     void fileDragEnter (const StringArray& files, int /*x*/, int /*y*/) override
     {
-        // filter out by extension:
-        for(String fileName : files) {
-            if(
-                fileName.matchesWildcard("*.mov", true)
-            ||  fileName.matchesWildcard("*.mp4", true)
-            ) hoveringFiles.add(fileName);
+        hoveringFiles.clear();
+        for(String& fileName : files) {
+            if(hasInterestingFileExtension(fileName)) hoveringFiles.add(fileName);
         }
         fileIsBeingDraggedOver = true;
         repaint();
@@ -111,11 +118,11 @@ public:
         repaint();
     }
 
-    void filesDropped (const StringArray& files, int x, int y) override
+    void filesDropped (const StringArray& /*files*/, int x, int y) override
     {
-        DBG("Files dropped: " + files.joinIntoString("\n") + "\nat row " + String(dragHoverIndex));
-
+        DBG("Files dropped: " + hoveringFiles.joinIntoString("\n") + "\nat row " + String(dragHoverIndex));
         fileIsBeingDraggedOver = false;
+        hoveringFiles.clear();
         repaint();
     }
 private:
