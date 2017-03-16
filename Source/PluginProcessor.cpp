@@ -267,16 +267,43 @@ AudioProcessorEditor* VispiControllerVstAudioProcessor::createEditor()
 //==============================================================================
 void VispiControllerVstAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-    ScopedPointer<XmlElement> xml (parameters.state.createXml());
+    ScopedPointer<XmlElement> xml = new XmlElement("state");
+    //ScopedPointer<XmlElement> parametersXml (parameters.state.createXml());
+    //ScopedPointer<XmlElement> playlist = new XmlElement("playlist");
+    
+    ValueTree playlistValueTree("playlist");
+    for(int i=0; i<fileNames.size(); i++) {
+        ValueTree track("track");
+        track.setProperty("path", fileNames[i], nullptr);
+        playlistValueTree.addChild(track, i, nullptr);
+    }
+    
+    xml->addChildElement(parameters.state.createXml());
+    xml->addChildElement(playlistValueTree.createXml());
     copyXmlToBinary (*xml, destData);
 }
 
 void VispiControllerVstAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     ScopedPointer<XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
-    if (xmlState != nullptr)
-        if (xmlState->hasTagName (parameters.state.getType()))
-            parameters.state = ValueTree::fromXml (*xmlState);
+    if (xmlState != nullptr) {
+        if(xmlState->hasTagName("state")) {
+            XmlElement* parametersXml = xmlState->getChildByName (parameters.state.getType());
+            if(parametersXml != nullptr)
+                parameters.state = ValueTree::fromXml (*parametersXml);
+            XmlElement* playlistXml = xmlState->getChildByName("playlist");
+            if(playlistXml != nullptr) {
+                ValueTree playlistValueTree = ValueTree::fromXml(*playlistXml);
+                for(const ValueTree& child : playlistValueTree) {
+                    if(child.hasType("track")) {
+                        DBG("loading track name: " + child.getProperty("path", "not found").toString());
+                        const ScopedLock fileNamesLock(fileNamesMutex);
+                        fileNames.push_back(child.getProperty("path", "not found").toString());
+                    }
+                }
+            }
+        }
+    }
 }
 
 //==============================================================================
