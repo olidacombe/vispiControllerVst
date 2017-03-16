@@ -42,7 +42,12 @@ public:
     void itemDropped();
     
     void setDragHoverIndex(const int i) { dragHoverIndex = i; }
-    void setDragSourceIndex(const int i) { dragSourceIndex = i; }
+    void setDragSourceIndex(const int i)
+    {
+        dragSourceIndex = i;
+        displayList = processor.getFileNames();
+        displayList.erase(displayList.begin() + i);
+    }
     void clearHoveringFiles() { hoveringFiles.clear(); }
     void addHoveringFile(const String& name) { hoveringFiles.add(name); }
     const int getNumHoveringFiles() { return hoveringFiles.size(); }
@@ -51,6 +56,7 @@ private:
     VispiControllerVstAudioProcessor& processor;
     int dragHoverIndex, dragSourceIndex;
     StringArray hoveringFiles;
+    std::vector<String> displayList;
 
 };
 
@@ -91,11 +97,7 @@ public:
         getModel()->setDragHoverIndex(getInsertionIndexForPosition(
             dragSourceDetails.localPosition.getX(), dragSourceDetails.localPosition.getY()
         ));
-        // DBG("Item " + dragSourceDetails.description.toString() + " hovering at " + String(dragHoverIndex));
-        // looky here: http://stackoverflow.com/questions/6224830/c-trying-to-swap-values-in-a-vector
-        // want to swap values within processor.fileNames - but not get messed-up as we drag over a second.. element
-        // also, that vector is hidden away inside processor.  Might just pass some stuff from here and call 
-        // repaint.
+        repaint();
     }
 
     void itemDragExit (const SourceDetails& /*dragSourceDetails*/) override
@@ -151,6 +153,7 @@ public:
     void fileDragMove (const StringArray& /*files*/, int x, int y) override
     {
         getModel()->setDragHoverIndex(getInsertionIndexForPosition(x, y));
+        repaint();
     }
 
     void fileDragExit (const StringArray& /*files*/) override

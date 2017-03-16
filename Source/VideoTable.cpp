@@ -18,7 +18,10 @@ VideoTableContents::VideoTableContents(VispiControllerVstAudioProcessor& p) : pr
 
 int VideoTableContents::getNumRows() {
     int total = processor.getNumFiles();
-    // how do we get at VideoTable bits from here?
+    if(dragHoverIndex != -1) {
+        //total += jmax(hoveringFiles.size(), 1);
+        total += hoveringFiles.size();
+    }
     return total;
 }
 
@@ -30,6 +33,9 @@ void VideoTableContents::paintCell(Graphics& g, int rowNumber, int columnId, int
     g.setFont(height * 0.7f);
     // ScopedLock...?
     String content;
+    
+    const int numHoveringFiles = hoveringFiles.size();
+    
     switch(columnId) {
         case INDEX_COLUMN:
             content = String(rowNumber);
@@ -38,7 +44,25 @@ void VideoTableContents::paintCell(Graphics& g, int rowNumber, int columnId, int
             content = MidiMessage::getMidiNoteName(rowNumber, true, true, 3);
             break;
         case NAME_COLUMN:
-            content = processor.getFileName(rowNumber);
+            if(dragSourceIndex != -1) { // we're rearranging items
+                
+                if(rowNumber < dragHoverIndex)
+                    content = processor.getFileName(rowNumber + ((rowNumber<dragSourceIndex)?0:1));
+                else if(rowNumber == dragHoverIndex)
+                    content = "";
+                else
+                    content = processor.getFileName(rowNumber - 1 + ((rowNumber<dragSourceIndex)?0:1));
+                
+            } else if(numHoveringFiles>0) {
+                
+                if(rowNumber < dragHoverIndex)
+                    content = processor.getFileName(rowNumber);
+                else if(rowNumber < dragHoverIndex + numHoveringFiles)
+                    content = "";
+                else
+                    content = processor.getFileName(rowNumber - numHoveringFiles);
+                
+            }
             break;
         default:
             break;

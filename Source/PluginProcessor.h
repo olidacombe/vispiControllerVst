@@ -67,6 +67,9 @@ public:
             return fileNames.at(n);
         return "";
     }
+    
+    std::vector<String> getFileNames() { return fileNames; }
+    
     const int getNumFiles() {
         //const ScopedLock fileNamesLock(fileNamesMutex); // probably unnecessary
         return fileNames.size();
