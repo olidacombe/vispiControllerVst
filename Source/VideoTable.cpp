@@ -13,7 +13,8 @@
 
 
 
-VideoTableContents::VideoTableContents(VispiControllerVstAudioProcessor& p) : processor(p)
+VideoTableContents::VideoTableContents(VispiControllerVstAudioProcessor& p) :
+    processor(p), dragSourceIndex(-1), dragHoverIndex(-1)
 {}
 
 int VideoTableContents::getNumRows() {
