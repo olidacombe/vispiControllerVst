@@ -13,6 +13,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
+#include "VideoTable.h"
 
 
 //==============================================================================
@@ -20,15 +21,10 @@
 */
 class VispiControllerVstAudioProcessorEditor  : public AudioProcessorEditor,
                                                 public ChangeListener,
-                                                public ButtonListener
+                                                public ButtonListener,
+                                                public DragAndDropContainer
 {
 public:
-    const enum {
-        INDEX_COLUMN = 1,
-        NOTE_COLUMN = 2,
-        NAME_COLUMN = 3
-        //INT_MIDI_FORMAT = 3
-    };
     //typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
     typedef AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
     
@@ -65,32 +61,6 @@ private:
     OSCMessenger* messenger;
     
     void reloadPlaylist();
-    
-    class VideoTableContents : public TableListBoxModel
-    {
-    public:
-        VideoTableContents(VispiControllerVstAudioProcessor& p);
-        int getNumRows() override;
-        
-        void paintRowBackground (Graphics&,
-                                 int rowNumber,
-                                 int width, int height,
-                                 bool rowIsSelected) override;
-        void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
-        
-        void cellClicked(int rowNumber, int columnId, const MouseEvent& e) override;
-    private:
-        VispiControllerVstAudioProcessor& processor;
-    };
-    
-    class VideoTableHeader : public TableHeaderComponent
-    {
-    public:
-        VideoTableHeader();
-        bool isNoteStyle() { return noteStyleDisplay; }
-    private:
-        bool noteStyleDisplay;
-    };
     
     ScopedPointer<VideoTableContents> videoTableModel;
     
