@@ -79,7 +79,7 @@ public:
 
     void reloadPlaylist() {
         String playlistLoadSuccess = loadPlaylist(playlistFilename) ? "playlist ok" : "playlist fail";
-        std::cout << playlistLoadSuccess << std::endl;
+        DBG(playlistLoadSuccess);
     }
     
     void processVideoSelection(const int n);

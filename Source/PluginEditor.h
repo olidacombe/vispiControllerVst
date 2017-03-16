@@ -53,7 +53,7 @@ private:
     MomentaryTextButton stopButton;
     ScopedPointer<ButtonAttachment> stopButtonAttachment;
     
-    TableListBox videoTable;
+    VideoTable videoTable;
     TextButton reloadButton;
 
     AudioProcessorValueTreeState& valueTreeState;

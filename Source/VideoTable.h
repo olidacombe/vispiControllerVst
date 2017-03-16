@@ -26,6 +26,7 @@ class VideoTable : public TableListBox,
                 public FileDragAndDropTarget
 {
 public:
+    VideoTable(const String &componentName=String(), TableListBoxModel *model=nullptr) : TableListBox(componentName, model) {}
     //==============================================================================
     // These methods implement the DragAndDropTarget interface, and allow our component
     // to accept drag-and-drop of objects from other Juce components..
