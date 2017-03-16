@@ -63,7 +63,7 @@ public:
     //int getVideoSelection() { return videoSelection; }
     const String getFileName(const int n) {
         const ScopedLock fileNamesLock(fileNamesMutex);
-        if(n < fileNames.size())
+        if(n >=0 && n < fileNames.size())
             return fileNames.at(n);
         return "";
     }

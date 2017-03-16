@@ -21,15 +21,52 @@ enum {
     //INT_MIDI_FORMAT = 3
 };
 
+
+class VideoTableContents : public TableListBoxModel
+{
+public:
+    VideoTableContents(VispiControllerVstAudioProcessor& p);
+    int getNumRows() override;
+        
+    void paintRowBackground (Graphics&,
+                             int rowNumber,
+                             int width, int height,
+                             bool rowIsSelected) override;
+    void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
+        
+    void cellClicked(int rowNumber, int columnId, const MouseEvent& e) override;
+    
+    var getDragSourceDescription (const SparseSet<int>& selectedRows) override;
+    
+    void filesDropped();
+    void itemDropped();
+    
+    void setDragHoverIndex(const int i) { dragHoverIndex = i; }
+    void setDragSourceIndex(const int i) { dragSourceIndex = i; }
+    void clearHoveringFiles() { hoveringFiles.clear(); }
+    void addHoveringFile(const String& name) { hoveringFiles.add(name); }
+    const int getNumHoveringFiles() { return hoveringFiles.size(); }
+
+private:
+    VispiControllerVstAudioProcessor& processor;
+    int dragHoverIndex, dragSourceIndex;
+    StringArray hoveringFiles;
+
+};
+
+
+
 class VideoTable : public TableListBox,
                 public DragAndDropTarget,
                 public FileDragAndDropTarget
 {
 public:
     VideoTable(const String &componentName=String(), TableListBoxModel *model=nullptr)
-        : TableListBox(componentName, model) {}
+        : TableListBox(componentName, model) { model = getModel(); }
     
     
+    VideoTableContents* getModel() { return static_cast<VideoTableContents*>(TableListBox::getModel()); }
+        
     //==============================================================================
     // These methods implement the DragAndDropTarget interface, and allow our component
     // to accept drag-and-drop of objects from other Juce components..
@@ -44,17 +81,17 @@ public:
 
     void itemDragEnter (const SourceDetails& dragSourceDetails) override
     {
-        dragSourceIndex = dragSourceDetails.description;
-        itemIsBeingDraggedOver = true;
+        getModel()->setDragSourceIndex(dragSourceDetails.description);
+        //itemIsBeingDraggedOver = true;
         repaint();
     }
 
     void itemDragMove (const SourceDetails& dragSourceDetails) override
     {
-        dragHoverIndex = getInsertionIndexForPosition(
+        getModel()->setDragHoverIndex(getInsertionIndexForPosition(
             dragSourceDetails.localPosition.getX(), dragSourceDetails.localPosition.getY()
-        );
-        DBG("Item " + dragSourceDetails.description.toString() + " hovering at " + String(dragHoverIndex));
+        ));
+        // DBG("Item " + dragSourceDetails.description.toString() + " hovering at " + String(dragHoverIndex));
         // looky here: http://stackoverflow.com/questions/6224830/c-trying-to-swap-values-in-a-vector
         // want to swap values within processor.fileNames - but not get messed-up as we drag over a second.. element
         // also, that vector is hidden away inside processor.  Might just pass some stuff from here and call 
@@ -63,15 +100,20 @@ public:
 
     void itemDragExit (const SourceDetails& /*dragSourceDetails*/) override
     {
-        itemIsBeingDraggedOver = false;
+        //itemIsBeingDraggedOver = false;
+        getModel()->setDragHoverIndex(-1);
+        getModel()->setDragSourceIndex(-1);
         repaint();
     }
 
     void itemDropped (const SourceDetails& dragSourceDetails) override
     {
-        DBG("Item " + dragSourceDetails.description.toString() + " dropped at " + String(dragHoverIndex));
-
-        itemIsBeingDraggedOver = false;
+        //DBG("Item " + dragSourceDetails.description.toString() + " dropped at " + String(dragHoverIndex));
+        // handle the drop
+        getModel()->itemDropped();
+        //itemIsBeingDraggedOver = false;
+        //model->setDragHoverIndex(-1);
+        //odel->setDragSourceIndex(-1);
         repaint();
     }
 
@@ -98,59 +140,41 @@ public:
 
     void fileDragEnter (const StringArray& files, int /*x*/, int /*y*/) override
     {
-        hoveringFiles.clear();
+        //model->clearHoveringFiles();
         for(String& fileName : files) {
-            if(hasInterestingFileExtension(fileName)) hoveringFiles.add(fileName);
+            if(hasInterestingFileExtension(fileName)) getModel()->addHoveringFile(fileName);
         }
-        fileIsBeingDraggedOver = true;
+        //fileIsBeingDraggedOver = true;
         repaint();
     }
 
     void fileDragMove (const StringArray& /*files*/, int x, int y) override
     {
-        dragHoverIndex = getInsertionIndexForPosition(x, y);
+        getModel()->setDragHoverIndex(getInsertionIndexForPosition(x, y));
     }
 
     void fileDragExit (const StringArray& /*files*/) override
     {
-        fileIsBeingDraggedOver = false;
-        hoveringFiles.clear();
+        //fileIsBeingDraggedOver = false;
+        getModel()->clearHoveringFiles();
+        
         repaint();
     }
 
     void filesDropped (const StringArray& /*files*/, int x, int y) override
     {
-        DBG("Files dropped: " + hoveringFiles.joinIntoString("\n") + "\nat row " + String(dragHoverIndex));
-        fileIsBeingDraggedOver = false;
-        hoveringFiles.clear();
+        //DBG("Files dropped: " + hoveringFiles.joinIntoString("\n") + "\nat row " + String(dragHoverIndex));
+        //fileIsBeingDraggedOver = false;
+        //hoveringFiles.clear();
+        //model->clearHoveringFiles();
+        getModel()->filesDropped();
         repaint();
     }
 private:
-    bool itemIsBeingDraggedOver, fileIsBeingDraggedOver;
-    int dragHoverIndex, dragSourceIndex;
-    StringArray hoveringFiles;
+
 
 };
     
-class VideoTableContents : public TableListBoxModel
-{
-public:
-    VideoTableContents(VispiControllerVstAudioProcessor& p);
-    int getNumRows() override;
-        
-    void paintRowBackground (Graphics&,
-                             int rowNumber,
-                             int width, int height,
-                             bool rowIsSelected) override;
-    void paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected) override;
-        
-    void cellClicked(int rowNumber, int columnId, const MouseEvent& e) override;
-    
-    var getDragSourceDescription (const SparseSet<int>& selectedRows) override;
-
-private:
-    VispiControllerVstAudioProcessor& processor;
-};
     
 class VideoTableHeader : public TableHeaderComponent
 {

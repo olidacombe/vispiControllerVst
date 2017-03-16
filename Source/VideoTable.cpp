@@ -17,7 +17,9 @@ VideoTableContents::VideoTableContents(VispiControllerVstAudioProcessor& p) : pr
 {}
 
 int VideoTableContents::getNumRows() {
-    return processor.getNumFiles();
+    int total = processor.getNumFiles();
+    // how do we get at VideoTable bits from here?
+    return total;
 }
 
 void VideoTableContents::paintCell(Graphics& g, int rowNumber, int columnId, int width, int height, bool rowIsSelected)
@@ -77,6 +79,30 @@ var VideoTableContents::getDragSourceDescription (const SparseSet<int>& selected
     // we only allow one selected row
     if(selectedRows.size()>0) return selectedRows[0];
     return var();
+}
+
+void VideoTableContents::filesDropped()
+{
+    DBG("Files dropped: " + hoveringFiles.joinIntoString("\n") + "\nat row " + String(dragHoverIndex));
+    
+    // handle the drop
+    
+    
+    // clean up
+    dragHoverIndex = -1;
+    clearHoveringFiles();
+}
+
+void VideoTableContents::itemDropped()
+{
+    DBG("Item " + String(dragSourceIndex) + " dropped at " + String(dragHoverIndex));
+    
+    // handle the drop
+    
+    
+    // clean up
+    dragHoverIndex = -1;
+    dragSourceIndex = -1;
 }
 
 
