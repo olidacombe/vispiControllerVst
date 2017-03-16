@@ -78,15 +78,8 @@ public:
     OSCMessenger* getMessenger() { return &messenger; }
     const int getSelectedVideoIndex() { return selectedVideoIndex; }
     
-    static const String xspfUriToString(const String& uri);
     static const String basename(const String& path);
 
-    /*
-    void reloadPlaylist() {
-        String playlistLoadSuccess = loadPlaylist(playlistFilename) ? "playlist ok" : "playlist fail";
-        DBG(playlistLoadSuccess);
-    }
-    */
     
     void processVideoSelection(const int n);
     void swapFiles(const int i, const int j)
@@ -96,7 +89,6 @@ public:
         const int fileNamesSizeAsInt = static_cast<int>(fileNames.size());
         const int ni = jmax(0, jmin(i, fileNamesSizeAsInt-1));
         const int nj = jmax(0, jmin(j, fileNamesSizeAsInt-1));
-
 
         std::iter_swap(fileNames.begin() + ni, fileNames.begin() + nj);
     }
@@ -110,6 +102,7 @@ public:
         for(String& f : fileNames) {
             DBG(f);
         }
+        writePlaylistM3uForUpload(playlistFilename);
     }
     
     void deleteFile(const int i) {
@@ -120,6 +113,7 @@ public:
         } catch (const std::out_of_range& e) {
             DBG("processor deleteFile out of range error");
         }
+        writePlaylistM3uForUpload(playlistFilename);
     }
     
     void parameterChanged(const String &parameterID, float newValue) override;
@@ -133,6 +127,7 @@ private:
     ScopedPointer<XmlElement> playlistData;
     
     //bool loadPlaylist(const String& path);
+    void writePlaylistM3uForUpload(const String&);
     
     std::vector<String> fileNames;
     CriticalSection fileNamesMutex;

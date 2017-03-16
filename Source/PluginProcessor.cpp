@@ -26,7 +26,7 @@ VispiControllerVstAudioProcessor::VispiControllerVstAudioProcessor() :
 
 #endif
     messenger("vispi", 12345),
-    playlistFilename("~/live_videos.xspf"),
+    playlistFilename("~/live_videos.m3u"),
     videoSelectionCC(99),
     parameters(*this, nullptr)
 {
@@ -211,42 +211,25 @@ void VispiControllerVstAudioProcessor::parameterChanged(const juce::String &para
     }
 }
 
-/*
-bool VispiControllerVstAudioProcessor::loadPlaylist(const String& path) {
-    
+
+void VispiControllerVstAudioProcessor::writePlaylistM3uForUpload(const String& path)
+{
     File file(path);
-    if(!file.exists()) return false;
-    playlistData = XmlDocument::parse(file);
-    if(playlistData == nullptr) return false;
-    
-    ScopedLock fileNamesLock(fileNamesMutex);
-    fileNames.clear();
-    // now populate our fileNames vector...
-    
-    XmlElement * tracklist = playlistData->getChildByName("trackList");
-    if(tracklist == nullptr) return false;
-    XmlElement * track = tracklist->getChildByName("track");
-    
-    while(track != nullptr)
-    {
-        
-        
-        XmlElement * location = track->getChildByName("location");
-        if(location != nullptr) {
-            fileNames.push_back(xspfUriToString(location->getAllSubText()));
-        }
-        
-        track = track->getNextElementWithTagName("track");
+    if(!file.create().wasOk()) {
+        DBG("failed to open file for m3u: " + path);
+        return;
+    }
+    file.deleteFile();
+    ScopedPointer<FileOutputStream> stream = file.createOutputStream();
+    if(stream == nullptr) {
+        DBG("failed to open output stream on " + path);
+        return;
+    }
+    for(const String& fileName : fileNames) {
+        stream->writeText(fileName + "\n", false, false);
     }
     
     
-    return true;
-}
-*/
-
-const String VispiControllerVstAudioProcessor::xspfUriToString(const String& uri)
-{
-    return URL::removeEscapeChars(basename(uri));
 }
 
 const String VispiControllerVstAudioProcessor::basename(const String& path) {
@@ -304,6 +287,7 @@ void VispiControllerVstAudioProcessor::setStateInformation (const void* data, in
                         fileNames.push_back(child.getProperty("path", "not found").toString());
                     }
                 }
+                writePlaylistM3uForUpload(playlistFilename);
             }
         }
     }
