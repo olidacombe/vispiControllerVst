@@ -54,7 +54,7 @@ void VideoTableContents::paintCell(Graphics& g, int rowNumber, int columnId, int
                 else
                     content = processor.getFileName(rowNumber - 1 + ((rowNumber<dragSourceIndex)?0:1));
                 
-            } else if(numHoveringFiles>0) {
+            } else if(numHoveringFiles>0) { // we're dragging files in
                 
                 if(rowNumber < dragHoverIndex)
                     content = processor.getFileName(rowNumber);
@@ -63,7 +63,7 @@ void VideoTableContents::paintCell(Graphics& g, int rowNumber, int columnId, int
                 else
                     content = processor.getFileName(rowNumber - numHoveringFiles);
                 
-            } else {
+            } else {  // we're not up to anything special, just show the list
                 content = processor.getFileName(rowNumber);
             }
             break;
@@ -113,7 +113,7 @@ void VideoTableContents::filesDropped()
     DBG("Files dropped: " + hoveringFiles.joinIntoString("\n") + "\nat row " + String(dragHoverIndex));
     
     // handle the drop
-    
+    processor.insertFiles(hoveringFiles, dragHoverIndex);
     
     // clean up
     dragHoverIndex = -1;

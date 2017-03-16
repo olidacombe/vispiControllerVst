@@ -97,6 +97,13 @@ public:
 
         std::iter_swap(fileNames.begin() + ni, fileNames.begin() + nj);
     }
+    
+    void insertFiles(const StringArray& paths, const int index) {
+        const ScopedLock fileNamesLock(fileNamesMutex);
+        if(index>=0 && index<=fileNames.size())
+            fileNames.insert(fileNames.begin()+index, paths.begin(), paths.end());
+    }
+    
     void parameterChanged(const String &parameterID, float newValue) override;
     
 private:
