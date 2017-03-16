@@ -102,6 +102,11 @@ public:
         const ScopedLock fileNamesLock(fileNamesMutex);
         if(index>=0 && index<=fileNames.size())
             fileNames.insert(fileNames.begin()+index, paths.begin(), paths.end());
+        
+        DBG("insertFiles result: ");
+        for(String& f : fileNames) {
+            DBG(f);
+        }
     }
     
     void parameterChanged(const String &parameterID, float newValue) override;

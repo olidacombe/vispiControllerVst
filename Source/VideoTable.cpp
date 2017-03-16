@@ -110,7 +110,7 @@ var VideoTableContents::getDragSourceDescription (const SparseSet<int>& selected
 
 void VideoTableContents::filesDropped()
 {
-    DBG("Files dropped: " + hoveringFiles.joinIntoString("\n") + "\nat row " + String(dragHoverIndex));
+    DBG("Files dropped:\n" + hoveringFiles.joinIntoString("\n") + "\nat row " + String(dragHoverIndex));
     
     // handle the drop
     processor.insertFiles(hoveringFiles, dragHoverIndex);

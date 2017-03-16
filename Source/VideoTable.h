@@ -147,12 +147,13 @@ public:
 
     void fileDragEnter (const StringArray& files, int /*x*/, int /*y*/) override
     {
-        //model->clearHoveringFiles();
+        //getModel()->clearHoveringFiles();
         for(String& fileName : files) {
             if(hasInterestingFileExtension(fileName)) getModel()->addHoveringFile(fileName);
         }
         //fileIsBeingDraggedOver = true;
-        repaint();
+        updateContent();
+        //repaint();
     }
 
     void fileDragMove (const StringArray& /*files*/, int x, int y) override
