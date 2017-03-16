@@ -35,11 +35,13 @@ private:
     
     void showConnectionErrorMessage (const String& messageText)
     {
-        AlertWindow::showMessageBoxAsync (
+        /*AlertWindow::showMessageBoxAsync (
             AlertWindow::WarningIcon,
             "Connection error",
             messageText,
             "OK");
+         */
+        DBG("Connection error: " + messageText);
     }
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSCMessenger)
