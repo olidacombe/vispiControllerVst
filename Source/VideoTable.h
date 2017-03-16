@@ -27,6 +27,11 @@ class VideoTable : public TableListBox,
 {
 public:
     VideoTable(const String &componentName=String(), TableListBoxModel *model=nullptr) : TableListBox(componentName, model) {}
+    
+    int dragSourceDetailsToRowNumber(const SourceDetails& dragSourceDetails) {
+        return getInsertionIndexForPosition(dragSourceDetails.localPosition.getX(), dragSourceDetails.localPosition.getY());
+    }
+    
     //==============================================================================
     // These methods implement the DragAndDropTarget interface, and allow our component
     // to accept drag-and-drop of objects from other Juce components..
@@ -45,8 +50,10 @@ public:
         repaint();
     }
 
-    void itemDragMove (const SourceDetails& /*dragSourceDetails*/) override
+    void itemDragMove (const SourceDetails& dragSourceDetails) override
     {
+        int row = dragSourceDetailsToRowNumber(dragSourceDetails);
+        DBG("Item " + dragSourceDetails.description.toString() + " hovering at " + String(row));
     }
 
     void itemDragExit (const SourceDetails& /*dragSourceDetails*/) override
@@ -57,7 +64,7 @@ public:
 
     void itemDropped (const SourceDetails& dragSourceDetails) override
     {
-        int row = getInsertionIndexForPosition(dragSourceDetails.localPosition.getX(), dragSourceDetails.localPosition.getY());
+        int row = dragSourceDetailsToRowNumber(dragSourceDetails);
         DBG("Item " + dragSourceDetails.description.toString() + " dropped at " + String(row));
 
         somethingIsBeingDraggedOver = false;
