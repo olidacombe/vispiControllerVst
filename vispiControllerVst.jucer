@@ -12,6 +12,8 @@
               pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="4.3.1">
   <MAINGROUP id="lbZJhT" name="vispiControllerVst">
     <GROUP id="{4F42BF4C-E85D-35F4-8A62-2C3DA97E60F9}" name="Source">
+      <FILE id="nfRhOW" name="VideoTable.cpp" compile="1" resource="0" file="Source/VideoTable.cpp"/>
+      <FILE id="qadv42" name="VideoTable.h" compile="0" resource="0" file="Source/VideoTable.h"/>
       <FILE id="B4W38f" name="OSCMessenger.cpp" compile="1" resource="0"
             file="Source/OSCMessenger.cpp"/>
       <FILE id="v4Ggie" name="OSCMessenger.h" compile="0" resource="0" file="Source/OSCMessenger.h"/>
