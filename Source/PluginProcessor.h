@@ -81,10 +81,12 @@ public:
     static const String xspfUriToString(const String& uri);
     static const String basename(const String& path);
 
+    /*
     void reloadPlaylist() {
         String playlistLoadSuccess = loadPlaylist(playlistFilename) ? "playlist ok" : "playlist fail";
         DBG(playlistLoadSuccess);
     }
+    */
     
     void processVideoSelection(const int n);
     void swapFiles(const int i, const int j)
@@ -130,7 +132,7 @@ private:
     String playlistFilename;
     ScopedPointer<XmlElement> playlistData;
     
-    bool loadPlaylist(const String& path);
+    //bool loadPlaylist(const String& path);
     
     std::vector<String> fileNames;
     CriticalSection fileNamesMutex;

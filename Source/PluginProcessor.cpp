@@ -30,7 +30,7 @@ VispiControllerVstAudioProcessor::VispiControllerVstAudioProcessor() :
     videoSelectionCC(99),
     parameters(*this, nullptr)
 {
-    reloadPlaylist();
+    //reloadPlaylist();
     parameters.createAndAddParameter ("loop", "Loop", String(),
                                       NormalisableRange<float> (0.0f, 1.0f, 1.0f), 0.0f,
                                       [](float value)
@@ -211,6 +211,7 @@ void VispiControllerVstAudioProcessor::parameterChanged(const juce::String &para
     }
 }
 
+/*
 bool VispiControllerVstAudioProcessor::loadPlaylist(const String& path) {
     
     File file(path);
@@ -241,6 +242,7 @@ bool VispiControllerVstAudioProcessor::loadPlaylist(const String& path) {
     
     return true;
 }
+*/
 
 const String VispiControllerVstAudioProcessor::xspfUriToString(const String& uri)
 {
@@ -294,6 +296,7 @@ void VispiControllerVstAudioProcessor::setStateInformation (const void* data, in
             XmlElement* playlistXml = xmlState->getChildByName("playlist");
             if(playlistXml != nullptr) {
                 ValueTree playlistValueTree = ValueTree::fromXml(*playlistXml);
+                fileNames.clear();
                 for(const ValueTree& child : playlistValueTree) {
                     if(child.hasType("track")) {
                         DBG("loading track name: " + child.getProperty("path", "not found").toString());

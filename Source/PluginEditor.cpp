@@ -26,10 +26,7 @@ VispiControllerVstAudioProcessorEditor::VispiControllerVstAudioProcessorEditor (
     videoTableModel = new VideoTableContents(processor);
     videoTable.setModel(videoTableModel);
     addAndMakeVisible(videoTable);
-    
-    reloadButton.setButtonText("Reload Playlist");
-    addAndMakeVisible(reloadButton);
-    reloadButton.addListener(this);
+
     
     loopButton.setButtonText("Loop");
     addAndMakeVisible(loopButton);
@@ -46,7 +43,6 @@ VispiControllerVstAudioProcessorEditor::VispiControllerVstAudioProcessorEditor (
 VispiControllerVstAudioProcessorEditor::~VispiControllerVstAudioProcessorEditor()
 {
     messenger->removeChangeListener(this);
-    reloadButton.removeListener(this);
     
     loopButtonAttachment = nullptr;
     
@@ -63,25 +59,7 @@ void VispiControllerVstAudioProcessorEditor::changeListenerCallback(ChangeBroadc
     }
 }
 
-void VispiControllerVstAudioProcessorEditor::buttonClicked(Button* button)
-{
-    if(button == &reloadButton) {
-        reloadPlaylist();
-    }
-    
-}
 
-void VispiControllerVstAudioProcessorEditor::reloadPlaylist()
-{
-    processor.reloadPlaylist();
-    videoTable.updateContent();
-    videoTable.deselectAllRows();
-    videoTable.autoSizeAllColumns();
-    
-    OSCMessage reloadMsg("/playlist/reload", true);
-    messenger->pushRawOscMsg(reloadMsg);
-    
-}
 
 //==============================================================================
 void VispiControllerVstAudioProcessorEditor::paint (Graphics& g)
@@ -101,7 +79,7 @@ void VispiControllerVstAudioProcessorEditor::resized()
     //videoListBox.setBounds(r.withSize(250, 180));
     videoTable.setBounds(r.removeFromLeft(220));
     videoTable.autoSizeAllColumns();
-    reloadButton.setBounds(r.removeFromTop(40).reduced(10));
+
     loopButton.setBounds(r.removeFromTop(40).reduced(10));
     stopButton.setBounds(r.removeFromTop(40).reduced(10));
 }

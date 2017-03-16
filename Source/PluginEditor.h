@@ -21,7 +21,6 @@
 */
 class VispiControllerVstAudioProcessorEditor  : public AudioProcessorEditor,
                                                 public ChangeListener,
-                                                public ButtonListener,
                                                 public DragAndDropContainer
 {
 public:
@@ -32,7 +31,6 @@ public:
     ~VispiControllerVstAudioProcessorEditor();
 
     void changeListenerCallback(ChangeBroadcaster *source) override;
-    void buttonClicked (Button* button) override;
     
     //==============================================================================
     void paint (Graphics&) override;
@@ -54,13 +52,10 @@ private:
     ScopedPointer<ButtonAttachment> stopButtonAttachment;
     
     VideoTable videoTable;
-    TextButton reloadButton;
 
     AudioProcessorValueTreeState& valueTreeState;
     VispiControllerVstAudioProcessor& processor;
     OSCMessenger* messenger;
-    
-    void reloadPlaylist();
     
     ScopedPointer<VideoTableContents> videoTableModel;
     
