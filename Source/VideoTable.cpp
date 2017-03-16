@@ -62,6 +62,8 @@ void VideoTableContents::paintCell(Graphics& g, int rowNumber, int columnId, int
                 else
                     content = processor.getFileName(rowNumber - numHoveringFiles);
                 
+            } else {
+                content = processor.getFileName(rowNumber);
             }
             break;
         default:
@@ -122,7 +124,7 @@ void VideoTableContents::itemDropped()
     DBG("Item " + String(dragSourceIndex) + " dropped at " + String(dragHoverIndex));
     
     // handle the drop
-    
+    processor.swapFiles(dragSourceIndex, dragHoverIndex);
     
     // clean up
     dragHoverIndex = -1;

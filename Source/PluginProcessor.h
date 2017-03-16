@@ -86,7 +86,17 @@ public:
     }
     
     void processVideoSelection(const int n);
-    
+    void swapFiles(const int i, const int j)
+    {
+        const ScopedLock fileNamesLock(fileNamesMutex);
+        
+        const int fileNamesSizeAsInt = static_cast<int>(fileNames.size());
+        const int ni = jmax(0, jmin(i, fileNamesSizeAsInt-1));
+        const int nj = jmax(0, jmin(j, fileNamesSizeAsInt-1));
+
+
+        std::iter_swap(fileNames.begin() + ni, fileNames.begin() + nj);
+    }
     void parameterChanged(const String &parameterID, float newValue) override;
     
 private:
