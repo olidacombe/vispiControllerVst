@@ -64,7 +64,7 @@ public:
     const String getFileName(const int n) {
         const ScopedLock fileNamesLock(fileNamesMutex);
         if(n >=0 && n < fileNames.size())
-            return fileNames.at(n);
+            return basename(fileNames.at(n));
         return "";
     }
     
@@ -79,6 +79,7 @@ public:
     const int getSelectedVideoIndex() { return selectedVideoIndex; }
     
     static const String xspfUriToString(const String& uri);
+    static const String basename(const String& path);
 
     void reloadPlaylist() {
         String playlistLoadSuccess = loadPlaylist(playlistFilename) ? "playlist ok" : "playlist fail";

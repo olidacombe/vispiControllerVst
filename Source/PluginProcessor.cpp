@@ -244,8 +244,11 @@ bool VispiControllerVstAudioProcessor::loadPlaylist(const String& path) {
 
 const String VispiControllerVstAudioProcessor::xspfUriToString(const String& uri)
 {
-    return URL::removeEscapeChars(uri.fromLastOccurrenceOf("/", false, false));
-    
+    return URL::removeEscapeChars(basename(uri));
+}
+
+const String VispiControllerVstAudioProcessor::basename(const String& path) {
+    return path.fromLastOccurrenceOf("/",false, false);
 }
 
 

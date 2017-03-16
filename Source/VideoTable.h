@@ -45,8 +45,6 @@ public:
     void setDragSourceIndex(const int i)
     {
         dragSourceIndex = i;
-        displayList = processor.getFileNames();
-        displayList.erase(displayList.begin() + i);
     }
     void clearHoveringFiles() { hoveringFiles.clear(); }
     void addHoveringFile(const String& name) { hoveringFiles.add(name); }
@@ -56,7 +54,6 @@ private:
     VispiControllerVstAudioProcessor& processor;
     int dragHoverIndex, dragSourceIndex;
     StringArray hoveringFiles;
-    std::vector<String> displayList;
 
 };
 
